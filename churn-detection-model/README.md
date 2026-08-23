@@ -27,17 +27,30 @@ churn rate).
 
 ## Files
 
-- `churn_model.py` — the pipeline as a plain runnable script.
-- `scikit_learn_tutorial.ipynb` — a step-by-step teaching notebook (Hebrew)
-  for students, built around Scikit-Learn's Estimator API (`fit`/`predict`)
-  and Transformer API (`fit`/`transform`), using this churn scenario as the
-  running example. Includes explanations, exercises, and a side-by-side
-  comparison swapping Random Forest for Logistic Regression to show the
-  unified API in action.
+- `churn-clinic.html` — **"מרפאת הנטישה" (The Churn Clinic)**, a self-contained,
+  no-code interactive teaching app (Hebrew). Students never read or write code —
+  they walk through 9 "clinic visits" (meet sample customers, explore real churn
+  signals, watch a live committee-of-trees vote, drag a decision threshold and
+  watch a real confusion matrix + ROC curve update on 667 real test customers,
+  read feature importance, and score a new customer with sliders) plus a short
+  concept quiz. Every number in the page — the confusion matrix, ROC curve,
+  feature importances, and the live scoring calculator — is driven by a model
+  actually trained on this project's dataset, embedded as data. Open it directly
+  in any browser (double-click the file, no server or install needed).
+- `scikit_learn_tutorial.ipynb` — a step-by-step **code** notebook (Hebrew) for
+  students who are ready to see the implementation, built around Scikit-Learn's
+  Estimator API (`fit`/`predict`) and Transformer API (`fit`/`transform`), using
+  this churn scenario as the running example. Includes a side-by-side comparison
+  swapping Random Forest for Logistic Regression to show the unified API.
+- `churn_model.py` — the same pipeline as a plain runnable script.
 
 ## Usage
 
 ```bash
+# No-code teaching app — just open it in a browser:
+open churn-clinic.html
+
+# Code notebook / script:
 pip install -r requirements.txt
 python churn_model.py
 # or open scikit_learn_tutorial.ipynb in Jupyter
