@@ -25,11 +25,22 @@ churn rate).
 8. **Score customers** into risk tiers (Low / Medium / High / Critical) for
    a retention workflow.
 
+## Files
+
+- `churn_model.py` — the pipeline as a plain runnable script.
+- `scikit_learn_tutorial.ipynb` — a step-by-step teaching notebook (Hebrew)
+  for students, built around Scikit-Learn's Estimator API (`fit`/`predict`)
+  and Transformer API (`fit`/`transform`), using this churn scenario as the
+  running example. Includes explanations, exercises, and a side-by-side
+  comparison swapping Random Forest for Logistic Regression to show the
+  unified API in action.
+
 ## Usage
 
 ```bash
 pip install -r requirements.txt
 python churn_model.py
+# or open scikit_learn_tutorial.ipynb in Jupyter
 ```
 
 ## Notes
