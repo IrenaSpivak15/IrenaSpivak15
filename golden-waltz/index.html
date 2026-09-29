@@ -1,0 +1,774 @@
+<meta charset="utf-8">
+<title>The Golden Waltz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Italiana&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap">
+<style>
+  /* Layout: one full-bleed stage canvas, a start card over it, a slim control bar pinned to the bottom.
+     Single dark world by choice: gold leaf on lamp-black, like the Belvedere at night. */
+  :root {
+    --ink: #120c06;
+    --ink-2: #1e150b;
+    --gold: #d4a94a;
+    --leaf: #f0cf7a;
+    --bone: #f3e6c8;
+    --muted: #b49b6c;
+    --display: "Italiana", "Didot", "Bodoni 72", Georgia, serif;
+    --body: "Cormorant Garamond", "Garamond", Georgia, serif;
+    color-scheme: dark;
+  }
+  [hidden] { display: none !important; }
+  html, body { height: 100%; }
+  body { background: var(--ink); color: var(--bone); font-family: var(--body); overflow: hidden; }
+  #stage { position: fixed; inset: 0; width: 100%; height: 100%; display: block; background: var(--ink); }
+
+  .card {
+    position: fixed; inset: 0; display: grid; place-items: center;
+    padding-inline: 16px; padding-block: 24px;
+    background: radial-gradient(ellipse at center, rgba(18,12,6,.35), rgba(18,12,6,.82) 70%);
+  }
+  .card-inner { max-width: 34rem; text-align: center; display: grid; gap: 14px; justify-items: center; }
+  .eyebrow { font-size: 0.8rem; letter-spacing: 0.32em; text-transform: uppercase; color: var(--muted); font-weight: 500; }
+  .card h1 {
+    font-family: var(--display); font-weight: 400; margin: 0; line-height: 0.95;
+    font-size: clamp(2.8rem, 11vw, 5.6rem); color: var(--leaf); text-wrap: balance;
+    text-shadow: 0 0 40px rgba(212,169,74,.35);
+  }
+  .card p { margin: 0; font-size: 1.2rem; line-height: 1.45; color: var(--bone); max-width: 30rem; }
+  .card p em { color: var(--leaf); }
+  .btn {
+    font: 500 1.05rem/1 var(--body); letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--ink); background: linear-gradient(180deg, var(--leaf), var(--gold));
+    border: 0; padding: 16px 30px; cursor: pointer; margin-top: 8px;
+    clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 10px 100%, 0 50%);
+    transition: filter .2s, transform .2s;
+  }
+  .btn:hover { filter: brightness(1.12); transform: translateY(-1px); }
+  .btn:focus-visible { outline: 2px solid var(--bone); outline-offset: 4px; }
+  .btn[disabled] { filter: grayscale(.8) brightness(.7); cursor: wait; }
+  .fine { font-size: 0.95rem !important; color: var(--muted) !important; font-style: italic; }
+
+  .bar {
+    position: fixed; left: 0; right: 0; bottom: 0;
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+    display: flex; align-items: center; gap: 12px;
+    background: linear-gradient(0deg, rgba(18,12,6,.85), rgba(18,12,6,0));
+    transition: opacity .4s;
+  }
+  .bar.idle { opacity: 0; }
+  .bar:hover, .bar:focus-within { opacity: 1; }
+  .ctl {
+    flex: none; width: 38px; height: 38px; border-radius: 50%;
+    border: 1px solid rgba(212,169,74,.55); background: rgba(18,12,6,.6); color: var(--leaf);
+    display: grid; place-items: center; cursor: pointer; padding: 0;
+  }
+  .ctl:hover { background: rgba(212,169,74,.18); }
+  .ctl:focus-visible { outline: 2px solid var(--leaf); outline-offset: 2px; }
+  .ctl svg { width: 16px; height: 16px; fill: currentColor; }
+  .track { position: relative; flex: 1; min-width: 0; height: 30px; }
+  .rail { position: absolute; left: 0; right: 0; top: 14px; height: 2px; background: rgba(212,169,74,.25); }
+  .fill { position: absolute; left: 0; top: 14px; height: 2px; background: var(--leaf); width: 0; }
+  .tick { position: absolute; top: 9px; width: 1px; height: 12px; background: rgba(212,169,74,.5); }
+  .now {
+    flex: none; font: 500 0.85rem var(--body); letter-spacing: .16em; text-transform: uppercase;
+    color: var(--leaf); min-width: 8.5em; text-align: right; font-variant-numeric: tabular-nums;
+  }
+  @media (max-width: 480px) { .now { min-width: 0; font-size: .72rem; letter-spacing: .1em; } }
+</style>
+
+<canvas id="stage" aria-label="Animated tribute to Gustav Klimt: his paintings and golden dancing couples moving to a waltz"></canvas>
+
+<div class="card" id="startCard">
+  <div class="card-inner">
+    <div class="eyebrow">Vienna · 1907 · in three-four time</div>
+    <h1>The Golden Waltz</h1>
+    <p>Klimt’s gold comes alive: <em>Adele</em>, <em>The Kiss</em> and a ballroom of gilded couples, dancing to a waltz written for this page.</p>
+    <button class="btn" id="startBtn" disabled>Loading gold…</button>
+    <p class="fine">Turn the sound on · about one minute</p>
+  </div>
+</div>
+
+<div class="card" id="endCard" hidden>
+  <div class="card-inner">
+    <div class="eyebrow">Fin</div>
+    <h1>Der Kunst ihre Freiheit</h1>
+    <p>To art its freedom, the motto over the door of the Vienna Secession.</p>
+    <button class="btn" id="againBtn">Dance again</button>
+  </div>
+</div>
+
+<div class="bar" id="bar" hidden>
+  <button class="ctl" id="playBtn" aria-label="Pause"><svg viewBox="0 0 16 16" id="playIcon"><rect x="3" y="2" width="3.5" height="12"/><rect x="9.5" y="2" width="3.5" height="12"/></svg></button>
+  <button class="ctl" id="muteBtn" aria-label="Mute"><svg viewBox="0 0 16 16" id="muteIcon"><path d="M2 6h3l4-3v10l-4-3H2z"/><path d="M11 5.5a3.5 3.5 0 0 1 0 5" stroke="currentColor" stroke-width="1.4" fill="none"/></svg></button>
+  <div class="track" id="track"><div class="rail"></div><div class="fill" id="fill"></div></div>
+  <div class="now" id="now">Overture</div>
+</div>
+
+<script>
+(() => {
+"use strict";
+/* ───────────── constants ───────────── */
+const BPM = 168, BEAT = 60 / BPM, BAR = BEAT * 3;
+const TOTAL_BARS = 56;
+const RM = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0.35 : 1;
+const TAU = Math.PI * 2;
+const PAL = {
+  ink: "#120c06", gold: "#d4a94a", leaf: "#f0cf7a", deep: "#8a6420", bone: "#f3e6c8",
+  black: "#17120d", silver: "#bdb6a6", lapis: "#2c4f94", rose: "#c8483a", violet: "#6b4c9a",
+  moss: "#56804d", coral: "#e0835a", skin: "#f1d3b9", auburn: "#b5552b", hair: "#1c1612"
+};
+
+/* ───────────── canvas ───────────── */
+const cv = document.getElementById("stage");
+const ctx = cv.getContext("2d");
+let W = 0, H = 0, U = 0, DPR = 1;
+let mosaic = null;
+function resize() {
+  DPR = Math.min(2, window.devicePixelRatio || 1);
+  W = cv.clientWidth; H = cv.clientHeight; U = Math.min(W, H);
+  cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  buildMosaic();
+  seedDust();
+}
+
+/* seeded random so the mosaic is the same every visit */
+function rng(seed) { let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); }
+
+/* ───────────── easing / math ───────────── */
+const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+const lerp = (a, b, k) => a + (b - a) * k;
+const ease = k => { k = clamp(k); return k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2; };
+const easeOut = k => 1 - Math.pow(1 - clamp(k), 3);
+const easeBack = k => { k = clamp(k); const c = 1.7; return 1 + (c + 1) * Math.pow(k - 1, 3) + c * Math.pow(k - 1, 2); };
+
+/* ───────────── images ───────────── */
+const IM = {};
+const SRC = { adele: "img/adele.jpg", garden: "img/garden.jpg", kiss: "img/kiss.jpg", klimt: "img/klimt.jpg" };
+const loaded = Promise.all(Object.entries(SRC).map(([k, src]) => new Promise(res => {
+  const im = new Image(); im.onload = () => { IM[k] = im; res(); }; im.onerror = () => res(); im.src = src;
+})));
+
+/* Draw an image covering the stage, centred on a focal point (fractions of the image). */
+function drawCover(img, fx, fy, zoom, rot = 0, ox = 0, oy = 0) {
+  if (!img) return;
+  const iw = img.naturalWidth, ih = img.naturalHeight;
+  const sc = Math.max(W / iw, H / ih) * zoom * (rot ? 1 + Math.abs(rot) * 1.6 : 1);
+  const hw = W / 2 / sc, hh = H / 2 / sc;
+  const cx = clamp(fx * iw, hw, iw - hw), cy = clamp(fy * ih, hh, ih - hh);
+  ctx.save();
+  ctx.translate(W / 2 + ox, H / 2 + oy); ctx.rotate(rot); ctx.scale(sc, sc);
+  ctx.drawImage(img, -cx, -cy);
+  ctx.restore();
+}
+
+/* circular medallions cut from the paintings for the kaleidoscope */
+const MEDAL_SPEC = [
+  ["adele", .51, .17, .19], ["kiss", .47, .17, .12], ["garden", .49, .16, .09], ["klimt", .52, .37, .17],
+  ["kiss", .53, .5, .11], ["adele", .11, .37, .12], ["garden", .1, .3, .12], ["kiss", .33, .45, .11],
+  ["adele", .6, .5, .15], ["garden", .5, .47, .08], ["kiss", .2, .86, .11], ["garden", .86, .62, .12],
+  ["adele", .8, .2, .12], ["klimt", .13, .2, .14], ["kiss", .62, .64, .1], ["garden", .2, .72, .12]
+];
+let medals = [];
+function buildMedals() {
+  medals = MEDAL_SPEC.map(([k, fx, fy, fr]) => {
+    const img = IM[k], c = document.createElement("canvas"); c.width = c.height = 256;
+    if (!img) return c;
+    const g = c.getContext("2d"), iw = img.naturalWidth, ih = img.naturalHeight;
+    const r = fr * Math.min(iw, ih);
+    g.save(); g.beginPath(); g.arc(128, 128, 118, 0, TAU); g.clip();
+    g.drawImage(img, fx * iw - r, fy * ih - r, r * 2, r * 2, 10, 10, 236, 236);
+    g.restore();
+    g.lineWidth = 10; g.strokeStyle = PAL.gold; g.beginPath(); g.arc(128, 128, 120, 0, TAU); g.stroke();
+    g.lineWidth = 2; g.strokeStyle = PAL.black; g.beginPath(); g.arc(128, 128, 114, 0, TAU); g.stroke();
+    return c;
+  });
+}
+
+/* ───────────── gold-leaf mosaic background ───────────── */
+function buildMosaic() {
+  mosaic = document.createElement("canvas");
+  mosaic.width = cv.width; mosaic.height = cv.height;
+  const m = mosaic.getContext("2d"), R = rng(1907);
+  const w = mosaic.width, h = mosaic.height, ts = Math.max(9, Math.round(U * DPR / 30));
+  m.fillStyle = "#24180a"; m.fillRect(0, 0, w, h);
+  for (let y = 0; y < h; y += ts) for (let x = 0; x < w; x += ts) {
+    const r = R(); let c;
+    if (r < .05) c = PAL.black; else if (r < .085) c = PAL.bone; else if (r < .11) c = PAL.silver;
+    else if (r < .125) c = PAL.lapis; else if (r < .14) c = PAL.rose;
+    else c = `hsl(${36 + R() * 12},${55 + R() * 25}%,${30 + R() * 30}%)`;
+    const j = (R() - .5) * ts * .15;
+    m.fillStyle = c; m.fillRect(x + 1 + j, y + 1 - j, ts - 2, ts - 2);
+    if (r > .14 && R() < .35) { m.fillStyle = "rgba(255,236,170,.35)"; m.fillRect(x + ts * R(), y + ts * R(), ts * .18, ts * .18); }
+  }
+  m.lineCap = "round";
+  for (let i = 0; i < 26; i++) {
+    const x = R() * w, y = R() * h, rr = ts * (1.2 + R() * 2.4);
+    m.strokeStyle = R() < .5 ? "rgba(250,220,140,.8)" : "rgba(40,26,10,.8)";
+    m.lineWidth = Math.max(1.5, ts * .16);
+    m.beginPath();
+    for (let k = 0; k <= 80; k++) { const a = k / 80 * 3.2 * TAU, q = rr * k / 80; m.lineTo(x + Math.cos(a) * q, y + Math.sin(a) * q); }
+    m.stroke();
+  }
+  const g = m.createRadialGradient(w / 2, h / 2, Math.min(w, h) * .2, w / 2, h / 2, Math.max(w, h) * .75);
+  g.addColorStop(0, "rgba(0,0,0,0)"); g.addColorStop(1, "rgba(10,6,2,.7)");
+  m.fillStyle = g; m.fillRect(0, 0, w, h);
+}
+function drawMosaic(t, dim = 0) {
+  ctx.drawImage(mosaic, 0, 0, W, H);
+  // travelling shimmer, like light across gold leaf
+  const sx = W * (.5 + .5 * Math.sin(t * .35)), sy = H * (.5 + .4 * Math.cos(t * .27));
+  const g = ctx.createRadialGradient(sx, sy, 0, sx, sy, U * .7);
+  g.addColorStop(0, "rgba(255,230,160,.22)"); g.addColorStop(1, "rgba(255,230,160,0)");
+  ctx.globalCompositeOperation = "lighter"; ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  ctx.globalCompositeOperation = "source-over";
+  if (dim) { ctx.fillStyle = `rgba(14,9,4,${dim})`; ctx.fillRect(0, 0, W, H); }
+}
+
+/* ───────────── ornaments ───────────── */
+function spiral(x, y, r, rot, turns, lw, col, alpha = 1) {
+  ctx.save(); ctx.globalAlpha *= alpha; ctx.strokeStyle = col; ctx.lineWidth = lw; ctx.lineCap = "round";
+  ctx.beginPath();
+  const n = Math.ceil(40 * turns);
+  for (let i = 0; i <= n; i++) { const k = i / n, a = k * turns * TAU + rot; ctx.lineTo(x + Math.cos(a) * r * k, y + Math.sin(a) * r * k); }
+  ctx.stroke(); ctx.restore();
+}
+function eye(x, y, r, cols, alpha = 1) {
+  ctx.save(); ctx.globalAlpha *= alpha;
+  cols.forEach((c, i) => { const k = 1 - i / cols.length; ctx.fillStyle = c; ctx.beginPath(); ctx.ellipse(x, y, r * k, r * k * .62, 0, 0, TAU); ctx.fill(); });
+  ctx.restore();
+}
+function rosette(x, y, r, rot, petal, core, alpha) {
+  if (!(r > .5)) return;
+  ctx.save(); ctx.globalAlpha *= alpha; ctx.translate(x, y); ctx.rotate(rot);
+  const n = 9;
+  for (let ring = 0; ring < 2; ring++) {
+    const rr = r * (ring ? .62 : 1);
+    ctx.fillStyle = ring ? core : petal;
+    for (let i = 0; i < n; i++) {
+      const a = i / n * TAU + ring * .35;
+      ctx.beginPath(); ctx.ellipse(Math.cos(a) * rr * .55, Math.sin(a) * rr * .55, rr * .42, rr * .26, a, 0, TAU); ctx.fill();
+    }
+  }
+  ctx.fillStyle = PAL.leaf; ctx.beginPath(); ctx.arc(0, 0, r * .28, 0, TAU); ctx.fill();
+  spiral(0, 0, r * .24, 0, 2.2, Math.max(1, r * .05), PAL.deep);
+  ctx.restore();
+}
+
+/* ───────────── gold dust ───────────── */
+let dust = [];
+function seedDust() {
+  const R = rng(1862), n = Math.round(clamp(W * H / 4200, 90, 320) * (RM < 1 ? .5 : 1));
+  dust = Array.from({ length: n }, () => ({ x: R() * W, y: R() * H, s: .6 + R() * 2.2, v: 8 + R() * 26, ph: R() * TAU, dr: R() - .5 }));
+}
+function drawDust(t, dt, amt = 1, pulse = 0, pull = 0) {
+  ctx.save(); ctx.globalCompositeOperation = "lighter";
+  for (const d of dust) {
+    d.y += d.v * dt * RM; d.x += Math.sin(t * .6 + d.ph) * 10 * dt * RM + d.dr * 6 * dt;
+    if (pull) { d.x += (W / 2 - d.x) * pull * dt; d.y += (H / 2 - d.y) * pull * dt; }
+    if (d.y > H + 4) { d.y = -4; d.x = Math.random() * W; }
+    if (d.x < -4) d.x = W + 4; if (d.x > W + 4) d.x = -4;
+    const a = (.25 + .75 * Math.abs(Math.sin(t * 2.1 + d.ph))) * amt * (1 + pulse * .8);
+    ctx.fillStyle = `rgba(255,${200 + (d.ph * 8 | 0) % 40},120,${clamp(a * .8)})`;
+    ctx.fillRect(d.x, d.y, d.s * (1 + pulse * .6), d.s * (1 + pulse * .6));
+  }
+  ctx.restore();
+}
+
+/* ───────────── the dancing couple (pseudo‑3D Kiss mantle) ─────────────
+   The couple is a bell of gold cloth. Motifs sit at fixed angles around
+   its axis; spinning moves them across the front, foreshortened by cos(). */
+const MOTIFS = (() => {
+  const R = rng(1908), out = [];
+  for (let i = 0; i < 54; i++) {
+    const man = i % 2 === 0;
+    out.push({
+      man, th: man ? R() * Math.PI : Math.PI + R() * Math.PI, h: .06 + R() * .86,
+      w: .05 + R() * .05, hh: .07 + R() * .12, r: .025 + R() * .035,
+      c: man ? [PAL.black, PAL.black, PAL.bone, PAL.silver][R() * 4 | 0] : [PAL.rose, PAL.lapis, PAL.violet, PAL.moss, PAL.coral][R() * 5 | 0]
+    });
+  }
+  return out;
+})();
+function coupleRadius(h, flare) { return .085 + .2 * Math.pow(h, 1.35) * flare; }
+function drawCouple(x, y, s, spin, rise, flare, alpha = 1, reflect = false) {
+  ctx.save();
+  ctx.translate(x, y); ctx.scale(s, reflect ? -s : s);
+  ctx.globalAlpha *= alpha;
+  ctx.translate(0, -rise * .05);
+  const base = ctx.globalAlpha;
+  if (!reflect) { // floor shadow
+    ctx.fillStyle = "rgba(0,0,0,.35)"; ctx.beginPath(); ctx.ellipse(0, rise * .05, .3 * flare, .05, 0, 0, TAU); ctx.fill();
+  }
+  // body outline
+  const N = 14, path = new Path2D();
+  path.moveTo(-coupleRadius(0, flare), -1);
+  for (let i = 1; i <= N; i++) { const h = i / N; path.lineTo(-coupleRadius(h, flare) + Math.sin(spin * 2 + h * 5) * .012 * h, -1 + h); }
+  path.quadraticCurveTo(0, .06, coupleRadius(1, flare), 0);
+  for (let i = N - 1; i >= 0; i--) { const h = i / N; path.lineTo(coupleRadius(h, flare) + Math.sin(spin * 2 + h * 5 + 1) * .012 * h, -1 + h); }
+  path.quadraticCurveTo(0, -1.08, -coupleRadius(0, flare), -1);
+  const g = ctx.createLinearGradient(-.3, 0, .3, 0);
+  g.addColorStop(0, PAL.deep); g.addColorStop(.45, "#f3cf6e"); g.addColorStop(1, "#7a5518");
+  ctx.fillStyle = g; ctx.fill(path);
+  ctx.save(); ctx.clip(path);
+  for (const m of MOTIFS) {
+    const a = m.th + spin, c = Math.cos(a);
+    if (c < .04) continue;
+    const r = coupleRadius(m.h, flare), mx = r * Math.sin(a), my = -1 + m.h;
+    ctx.globalAlpha = base * clamp(c * 2.5);
+    if (m.man) { ctx.fillStyle = m.c; ctx.fillRect(mx - m.w * c / 2, my - m.hh / 2, m.w * c, m.hh); }
+    else {
+      ctx.fillStyle = m.c; ctx.beginPath(); ctx.ellipse(mx, my, m.r * c, m.r, 0, 0, TAU); ctx.fill();
+      ctx.fillStyle = PAL.bone; ctx.beginPath(); ctx.ellipse(mx, my, m.r * .45 * c, m.r * .45, 0, 0, TAU); ctx.fill();
+    }
+  }
+  ctx.globalAlpha = base;
+  // tiny meadow flowers along the hem
+  for (let i = 0; i < 9; i++) {
+    const a = i / 9 * TAU + spin, c = Math.cos(a); if (c < .1) continue;
+    ctx.fillStyle = [PAL.rose, PAL.violet, PAL.bone][i % 3];
+    ctx.beginPath(); ctx.arc(coupleRadius(.95, flare) * Math.sin(a), -.04, .018, 0, TAU); ctx.fill();
+  }
+  ctx.restore();
+  ctx.strokeStyle = "rgba(60,38,10,.8)"; ctx.lineWidth = .01; ctx.stroke(path);
+  // heads: his dark curls bent toward her; her auburn hair with flowers
+  const heads = [
+    { th: Math.PI / 2, y: -1.13, r: .078, man: true },
+    { th: Math.PI * 1.5, y: -1.05, r: .07, man: false }
+  ].map(o => ({ ...o, x: .07 * Math.sin(o.th + spin), z: Math.cos(o.th + spin) })).sort((a, b) => a.z - b.z);
+  for (const hd of heads) {
+    if (hd.man) {
+      ctx.fillStyle = PAL.hair; ctx.beginPath(); ctx.arc(hd.x, hd.y, hd.r, 0, TAU); ctx.fill();
+      ctx.fillStyle = PAL.moss; for (let k = 0; k < 5; k++) { const a = k * 1.3 + spin; ctx.beginPath(); ctx.arc(hd.x + Math.cos(a) * hd.r * .7, hd.y + Math.sin(a) * hd.r * .6, .012, 0, TAU); ctx.fill(); }
+    } else {
+      ctx.fillStyle = PAL.skin; ctx.beginPath(); ctx.arc(hd.x, hd.y, hd.r, 0, TAU); ctx.fill();
+      ctx.fillStyle = PAL.auburn; ctx.beginPath(); ctx.arc(hd.x, hd.y - hd.r * .15, hd.r * 1.05, Math.PI * .95, Math.PI * 2.05); ctx.fill();
+      ctx.fillStyle = PAL.rose; ctx.beginPath(); ctx.arc(hd.x - hd.r * .6, hd.y - hd.r * .6, .016, 0, TAU); ctx.fill();
+      ctx.fillStyle = PAL.lapis; ctx.beginPath(); ctx.arc(hd.x + hd.r * .5, hd.y - hd.r * .75, .014, 0, TAU); ctx.fill();
+    }
+  }
+  ctx.restore();
+}
+/* waltz motion: one full turn every two bars, rise on beats two and three */
+function waltzPose(beats, phase) {
+  const barK = (beats / 3) % 1;
+  return {
+    spin: beats / 6 * TAU + phase,
+    rise: .5 - .5 * Math.cos(barK * TAU),
+    flare: 1.05 + .12 * Math.sin(barK * TAU + 1)
+  };
+}
+
+/* ───────────── captions ───────────── */
+function caption(label, title, lt, len) {
+  const a = Math.min(clamp(lt - .3), clamp((len - lt) / .7));
+  if (a <= 0 || state === "idle") return;
+  ctx.save(); ctx.globalAlpha *= a;
+  const x = Math.max(20, W * .05), y = H - 78 - (1 - easeOut(clamp(lt - .3))) * -12;
+  const fs = clamp(U * .055, 22, 40);
+  ctx.shadowColor = "rgba(0,0,0,.8)"; ctx.shadowBlur = 14;
+  ctx.fillStyle = PAL.leaf; ctx.font = `500 ${Math.round(fs * .42)}px "Cormorant Garamond", Georgia, serif`;
+  if ("letterSpacing" in ctx) ctx.letterSpacing = `${Math.round(fs * .12)}px`;
+  ctx.fillText(label.toUpperCase(), x, y - fs * 1.05);
+  if ("letterSpacing" in ctx) ctx.letterSpacing = "0px";
+  ctx.fillStyle = PAL.bone; ctx.font = `italic 400 ${Math.round(fs)}px "Cormorant Garamond", Georgia, serif`;
+  ctx.fillText(title, x, y);
+  ctx.fillStyle = PAL.gold; ctx.fillRect(x, y + fs * .35, Math.min(W * .3, fs * 3) * easeOut(lt - .3), 1.5);
+  ctx.restore();
+}
+function letters(text, cx, cy, font, progress, col, glow = 0) {
+  ctx.save(); ctx.font = font; ctx.textBaseline = "middle";
+  const w = ctx.measureText(text).width, base = ctx.globalAlpha; let x = cx - w / 2;
+  if (glow) { ctx.shadowColor = "rgba(240,200,110,.7)"; ctx.shadowBlur = glow; }
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i], a = clamp(progress - i * .5);
+    ctx.globalAlpha = base * a; ctx.fillStyle = col;
+    ctx.fillText(ch, x, cy + (1 - easeOut(a)) * 14);
+    x += ctx.measureText(ch).width;
+  }
+  ctx.restore();
+}
+function vignette(k = .75) {
+  const g = ctx.createRadialGradient(W / 2, H / 2, U * .3, W / 2, H / 2, Math.hypot(W, H) * .6);
+  g.addColorStop(0, "rgba(0,0,0,0)"); g.addColorStop(1, `rgba(8,5,2,${k})`);
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+}
+
+/* ───────────── scenes ───────────── */
+function sIntro(lt, t, P) {
+  ctx.fillStyle = PAL.ink; ctx.fillRect(0, 0, W, H);
+  const k = lt / 4;
+  const g = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, U * .7);
+  g.addColorStop(0, `rgba(212,169,74,${.28 * ease(k) + .12 * P.down})`); g.addColorStop(1, "rgba(212,169,74,0)");
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  spiral(W / 2, H / 2, U * .42 * ease(k * 1.3), -t * 1.1 * RM, 5, 1.6, PAL.gold, .55);
+  spiral(W / 2, H / 2, U * .3 * ease(k * 1.3), t * .8 * RM + 2, 4, 1, PAL.leaf, .35);
+  drawDust(t, P.dt, 1.2, P.beat, .25);
+  const fs = Math.min(U * .13, W * .11);
+  letters("The Golden Waltz", W / 2, H / 2 - fs * .15, `400 ${fs}px Italiana, Didot, Georgia, serif`, lt * 3 * 1.4 - 1, PAL.leaf, 24);
+  ctx.save(); ctx.globalAlpha *= clamp((lt - 2.2) * 1.2);
+  ctx.fillStyle = PAL.bone; ctx.textAlign = "center";
+  ctx.font = `italic 400 ${Math.round(fs * .3)}px "Cormorant Garamond", Georgia, serif`;
+  ctx.fillText("after Gustav Klimt · Vienna, 1907", W / 2, H / 2 + fs * .75);
+  ctx.restore();
+}
+function sAdele(lt, t, P, len) {
+  const k = lt / len;
+  drawMosaic(t, .55);
+  const img = IM.adele;
+  if (img) {
+    // start close on her face, pull back until the whole portrait stands framed in gold
+    const iw = img.naturalWidth, ih = img.naturalHeight, e = ease(k);
+    const sc = lerp(Math.max(W / iw, H / ih) * 2.1, Math.min(W / iw, H / ih) * .9, e);
+    const hw = W / 2 / sc, hh = H / 2 / sc, fy = lerp(.17, .5, e);
+    const cx = hw * 2 < iw ? clamp(.5 * iw, hw, iw - hw) : iw / 2, cy = hh * 2 < ih ? clamp(fy * ih, hh, ih - hh) : ih / 2;
+    ctx.save(); ctx.translate(W / 2, H / 2); ctx.rotate(.014 * Math.sin(lt * Math.PI) * RM); ctx.scale(sc, sc);
+    ctx.shadowColor = "rgba(0,0,0,.6)"; ctx.shadowBlur = 40;
+    ctx.drawImage(img, -cx, -cy);
+    ctx.shadowBlur = 0; ctx.strokeStyle = PAL.leaf; ctx.lineWidth = 3 / sc; ctx.strokeRect(-cx, -cy, iw, ih);
+    ctx.restore();
+  }
+  ctx.save(); ctx.globalCompositeOperation = "lighter";
+  const spots = [[.12, .2], [.88, .28], [.1, .7], [.9, .78], [.5, .9], [.8, .08]];
+  spots.forEach(([sx, sy], i) => {
+    const on = clamp(lt - i * .9);
+    if (!on) return;
+    spiral(W * sx, H * sy, U * .11 * easeBack(on) * (1 + .1 * P.down), t * (i % 2 ? 1 : -1) * RM, 3.2, 2.2, PAL.leaf, .55);
+  });
+  ctx.restore();
+  vignette(.7);
+  drawDust(t, P.dt, .8, P.beat);
+  caption("Gustav Klimt · 1907", "Portrait of Adele Bloch-Bauer I", lt, len);
+}
+function sKiss(lt, t, P, len) {
+  const k = lt / len;
+  drawCover(IM.kiss, .48, lerp(.22, .5, ease(k)), lerp(1.55, 1.08, ease(k)) + .015 * P.down, .03 * Math.sin(lt * Math.PI) * RM);
+  // ripples out of the embrace on every downbeat
+  const bf = (lt % 1);
+  ctx.save(); ctx.globalCompositeOperation = "lighter";
+  for (let i = 0; i < 3; i++) {
+    const q = (bf + i / 3) % 1;
+    ctx.strokeStyle = `rgba(255,220,140,${(1 - q) * .45})`; ctx.lineWidth = 2 + (1 - q) * 3;
+    ctx.beginPath(); ctx.arc(W / 2, H * .38, U * (.08 + q * .75), 0, TAU); ctx.stroke();
+  }
+  ctx.restore();
+  vignette(.6);
+  drawDust(t, P.dt, 1.6, P.beat);
+  caption("1907–1908 · Belvedere, Vienna", "The Kiss", lt, len);
+}
+function sBallroom(lt, t, P, len, extra = {}) {
+  drawMosaic(t, .62);
+  // lamps: hanging gold spirals that swing in time
+  for (let i = 0; i < 5; i++) {
+    const x = W * (.1 + i * .2), sw = Math.sin(P.beats / 3 * Math.PI + i) * .15 * RM;
+    ctx.save(); ctx.translate(x, 0); ctx.rotate(sw);
+    ctx.strokeStyle = "rgba(240,207,122,.5)"; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(0, H * .14); ctx.stroke();
+    ctx.globalCompositeOperation = "lighter";
+    const g = ctx.createRadialGradient(0, H * .16, 0, 0, H * .16, U * .12 * (1 + .25 * P.beat));
+    g.addColorStop(0, "rgba(255,225,150,.55)"); g.addColorStop(1, "rgba(255,225,150,0)");
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, H * .16, U * .14, 0, TAU); ctx.fill();
+    spiral(0, H * .16, U * .035, t * 2, 2.5, 2, PAL.leaf);
+    ctx.restore();
+  }
+  // floor
+  const cx = W / 2, cy = H * .7, rx = Math.min(W * .42, U * .75), ry = Math.max(H * .15, U * .12);
+  const fg = ctx.createRadialGradient(cx, cy, 0, cx, cy, rx * 1.2);
+  fg.addColorStop(0, "rgba(240,200,110,.45)"); fg.addColorStop(1, "rgba(60,38,10,.0)");
+  ctx.fillStyle = fg; ctx.beginPath(); ctx.ellipse(cx, cy, rx * 1.25, ry * 1.5, 0, 0, TAU); ctx.fill();
+  const n = extra.n || 6, sizeK = extra.size || 1;
+  const travel = P.beats / 3 * TAU / 16 * (extra.speed || 1);
+  const shrink = extra.shrink ?? 1;
+  const cs = [];
+  for (let i = 0; i < n; i++) {
+    const phi = i / n * TAU + travel;
+    const x = cx + Math.cos(phi) * rx * shrink, y = cy + Math.sin(phi) * ry * shrink;
+    const depth = (Math.sin(phi) + 1) / 2;
+    cs.push({ x, y, s: U * .3 * sizeK * (.62 + .38 * depth), pose: waltzPose(P.beats * (extra.spinK || 1), i * 1.7), depth });
+  }
+  cs.sort((a, b) => a.y - b.y);
+  for (const c of cs) drawCouple(c.x, c.y + c.s * .02, c.s, c.pose.spin, c.pose.rise * RM, c.pose.flare, .16, true);
+  for (const c of cs) drawCouple(c.x, c.y, c.s, c.pose.spin, c.pose.rise * RM, c.pose.flare, .55 + .45 * c.depth);
+  vignette(.55);
+  drawDust(t, P.dt, .9, P.beat);
+  if (!extra.noCaption) caption("Three-four time · 168 beats a minute", "Der Walzer", lt, len);
+}
+let flowers = [], lastFlowerBeat = -1;
+const FLOWER_COLS = [[PAL.rose, PAL.coral], [PAL.lapis, "#8fb0e0"], [PAL.coral, PAL.bone], [PAL.violet, "#d9a6c6"], ["#e8a0a8", PAL.bone]];
+function sGarden(lt, t, P, len) {
+  const k = lt / len;
+  const sway = Math.sin(lt * Math.PI) * RM;
+  drawCover(IM.garden, .5, lerp(.2, .55, ease(k)), lerp(1.45, 1.05, ease(k)) + .015 * P.down, .018 * sway, sway * U * .012);
+  const b = Math.floor(P.beats);
+  if (b !== lastFlowerBeat) {
+    lastFlowerBeat = b;
+    const R = rng(b * 97 + 13);
+    for (let i = 0; i < (b % 3 === 0 ? 3 : 1); i++) {
+      const side = R() < .5 ? R() * .28 : .72 + R() * .28;
+      flowers.push({ x: side * W, y: R() * H, r: U * (.035 + R() * .05), born: t, rot: R() * TAU, cols: FLOWER_COLS[(R() * FLOWER_COLS.length) | 0] });
+    }
+  }
+  flowers = flowers.filter(f => t - f.born < 4);
+  for (const f of flowers) {
+    const age = t - f.born;
+    rosette(f.x, f.y + age * 10, f.r * easeBack(age / .45), f.rot + age * .6 * RM, f.cols[0], f.cols[1], clamp((4 - age) / 1.2));
+  }
+  vignette(.55);
+  drawDust(t, P.dt, 1, P.beat);
+  caption("Ver Sacrum · sacred spring", "A Garden in Gold", lt, len);
+}
+function sKaleido(lt, t, P, len) {
+  // sunburst
+  ctx.fillStyle = PAL.ink; ctx.fillRect(0, 0, W, H);
+  ctx.save(); ctx.translate(W / 2, H / 2); ctx.rotate(t * .12 * RM);
+  const R = Math.hypot(W, H);
+  for (let i = 0; i < 36; i++) {
+    ctx.fillStyle = i % 2 ? "rgba(212,169,74,.22)" : "rgba(18,12,6,0)";
+    ctx.beginPath(); ctx.moveTo(0, 0); ctx.arc(0, 0, R, i / 36 * TAU, (i + 1) / 36 * TAU); ctx.fill();
+  }
+  ctx.restore();
+  const g = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, U * .6);
+  g.addColorStop(0, `rgba(240,200,110,${.35 + .2 * P.down})`); g.addColorStop(1, "rgba(240,200,110,0)");
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  const intro = easeOut(lt / 1.2);
+  const barI = Math.floor(P.beats / 3), barF = (P.beats / 3) % 1;
+  const rings = [{ n: 6, r: .2, s: .085 }, { n: 10, r: .335, s: .066 }, { n: 16, r: .465, s: .05 }];
+  let mi = 1;
+  rings.forEach((ring, k) => {
+    const dir = k % 2 ? -1 : 1;
+    const step = (barI + ease(clamp(barF * 2.2))) * TAU / ring.n * RM;
+    for (let i = 0; i < ring.n; i++) {
+      const a = i / ring.n * TAU + dir * step;
+      const lit = (Math.floor(P.beats) % ring.n) === i ? P.beat : 0;
+      const rr = U * ring.r * intro, sz = U * ring.s * (1 + .3 * lit) * intro;
+      const x = W / 2 + Math.cos(a) * rr, y = H / 2 + Math.sin(a) * rr;
+      const m = medals[(mi + i + k * 3) % medals.length];
+      if (m) ctx.drawImage(m, x - sz, y - sz, sz * 2, sz * 2);
+    }
+    mi += ring.n;
+  });
+  spiral(W / 2, H / 2, U * .13, -t * 1.6 * RM, 3.5, 3, PAL.leaf, .9);
+  const cs = U * .1 * (1 + .12 * P.down) * intro;
+  if (medals[0]) ctx.drawImage(medals[0], W / 2 - cs, H / 2 - cs, cs * 2, cs * 2);
+  vignette(.65);
+  drawDust(t, P.dt, 1, P.beat);
+  caption("Gold leaf, oil and ornament", "The Golden Round", lt, len);
+}
+function sKlimt(lt, t, P, len) {
+  const k = lt / len;
+  drawCover(IM.klimt, .5, .45, lerp(1.3, 1.02, ease(k)), 0);
+  const g = ctx.createLinearGradient(0, H * .45, 0, H);
+  g.addColorStop(0, "rgba(14,9,4,0)"); g.addColorStop(1, "rgba(14,9,4,.92)");
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  ctx.save(); ctx.globalCompositeOperation = "lighter";
+  [[0, 0], [1, 0], [0, 1], [1, 1]].forEach(([cx, cy], i) => spiral(W * cx, H * cy, U * .2 * easeBack(lt - i * .3), t * (i % 2 ? 1 : -1) * RM, 4, 2, PAL.leaf, .5));
+  ctx.restore();
+  const fs = clamp(Math.min(W * .06, U * .07), 20, 52);
+  letters("Der Zeit ihre Kunst,", W / 2, H * .6, `400 ${fs}px Italiana, Didot, Georgia, serif`, lt * 5 - 2, PAL.leaf, 18);
+  letters("der Kunst ihre Freiheit.", W / 2, H * .6 + fs * 1.15, `400 ${fs}px Italiana, Didot, Georgia, serif`, lt * 5 - 10, PAL.leaf, 18);
+  ctx.save(); ctx.globalAlpha *= clamp(lt - 4.2) * clamp((len - lt) / .7);
+  ctx.textAlign = "center"; ctx.fillStyle = PAL.bone;
+  ctx.font = `italic 400 ${Math.round(fs * .5)}px "Cormorant Garamond", Georgia, serif`;
+  ctx.fillText("To every age its art, to art its freedom", W / 2, H * .6 + fs * 2.2);
+  ctx.restore();
+  drawDust(t, P.dt, 1, P.beat);
+  caption("1862 – 1918", "Gustav Klimt", lt, len);
+}
+function sFinale(lt, t, P, len) {
+  const k = clamp(lt / (len - .6));
+  sBallroom(lt, t, P, len, { n: 8, size: lerp(1, .55, k), speed: 1 + k * 4, spinK: 1 + k, shrink: lerp(1, .15, ease(k)), noCaption: true });
+  // iris closes into a gold spiral
+  const r = Math.hypot(W, H) * .6 * (1 - ease(clamp((lt - 1.3) / 2.2))) + U * .16;
+  ctx.save(); ctx.fillStyle = PAL.ink; ctx.beginPath(); ctx.rect(0, 0, W, H); ctx.arc(W / 2, H * .55, r, 0, TAU, true); ctx.fill("evenodd"); ctx.restore();
+  ctx.strokeStyle = PAL.gold; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(W / 2, H * .55, r, 0, TAU); ctx.stroke();
+  const fin = clamp((lt - 3) * 1.5);
+  if (fin > 0) {
+    ctx.fillStyle = `rgba(18,12,6,${fin})`; ctx.fillRect(0, 0, W, H);
+    spiral(W / 2, H / 2, U * .25 * easeOut(fin), -t * RM, 4, 2, PAL.gold, fin);
+    letters("Fin", W / 2, H / 2, `400 ${U * .14}px Italiana, Didot, Georgia, serif`, fin * 3, PAL.leaf, 30);
+  }
+}
+const SCENES = [
+  { s: 0, e: 4, name: "Overture", fn: sIntro },
+  { s: 4, e: 12, name: "Adele", fn: sAdele },
+  { s: 12, e: 20, name: "The Kiss", fn: sKiss },
+  { s: 20, e: 28, name: "Der Walzer", fn: sBallroom },
+  { s: 28, e: 36, name: "Garden", fn: sGarden },
+  { s: 36, e: 44, name: "Golden Round", fn: sKaleido },
+  { s: 44, e: 52, name: "Klimt", fn: sKlimt },
+  { s: 52, e: 56, name: "Finale", fn: sFinale }
+];
+
+/* ───────────── music: a waltz in D, synthesised live ───────────── */
+const CH = {
+  D: { b: [50, 45], c: [62, 66, 69] }, A7: { b: [45, 52], c: [61, 64, 67] }, G: { b: [43, 50], c: [62, 67, 71] },
+  Bm: { b: [47, 54], c: [62, 66, 71] }, Em: { b: [40, 47], c: [64, 67, 71] }, A: { b: [45, 52], c: [61, 64, 69] }
+};
+const chA = ["D", "D", "A7", "A7", "A7", "A7", "D", "D", "D", "D", "G", "G", "D", "A7", "D", "D"];
+const melA = [[[69, 2], [66, 1]], [[74, 2], [69, 1]], [[67, 1], [69, 1], [73, 1]], [[76, 3]], [[76, 2], [73, 1]], [[79, 2], [76, 1]], [[78, 1], [76, 1], [74, 1]], [[74, 3]],
+  [[69, 2], [66, 1]], [[74, 2], [78, 1]], [[83, 2], [79, 1]], [[74, 3]], [[78, 2], [81, 1]], [[79, 1], [76, 1], [73, 1]], [[74, 2], [69, 1]], [[74, 3]]];
+const chB = ["Bm", "Bm", "G", "G", "D", "D", "A", "A", "Bm", "Bm", "G", "G", "Em", "A7", "D", "D"];
+const melB = [[[71, 1], [74, 1], [78, 1]], [[78, 2], [76, 1]], [[74, 1], [71, 1], [67, 1]], [[71, 3]], [[69, 1], [74, 1], [78, 1]], [[81, 2], [78, 1]], [[76, 1], [73, 1], [69, 1]], [[76, 3]],
+  [[71, 1], [74, 1], [78, 1]], [[83, 2], [81, 1]], [[79, 1], [74, 1], [71, 1]], [[79, 3]], [[79, 1], [78, 1], [76, 1]], [[73, 2], [76, 1]], [[74, 2], [78, 1]], [[74, 3]]];
+const SONG = [];
+["D", "D", "A7", "A7"].forEach(c => SONG.push({ ch: c, mel: [], sec: "intro" }));
+chA.forEach((c, i) => SONG.push({ ch: c, mel: melA[i], sec: "A" }));
+chB.forEach((c, i) => SONG.push({ ch: c, mel: melB[i], sec: "B" }));
+chA.forEach((c, i) => SONG.push({ ch: c, mel: melA[i], sec: "A2" }));
+SONG.push({ ch: "D", mel: [[74, 1], [78, 1], [81, 1]], sec: "out" }, { ch: "A7", mel: [[79, 1], [76, 1], [73, 1]], sec: "out" }, { ch: "D", mel: [[86, 3]], sec: "final" }, { ch: "D", mel: [], sec: "ring" });
+
+const mtof = m => 440 * Math.pow(2, (m - 69) / 12);
+let AC = null, master, bus, verb, t0 = 0, nextBeat = 0, schedTimer = null, muted = false;
+function initAudio() {
+  AC = new (window.AudioContext || window.webkitAudioContext)();
+  master = AC.createGain(); master.gain.value = muted ? 0 : .9;
+  const comp = AC.createDynamicsCompressor(); comp.threshold.value = -16; comp.ratio.value = 3;
+  master.connect(comp).connect(AC.destination);
+  bus = AC.createGain(); bus.connect(master);
+  verb = AC.createConvolver();
+  const len = AC.sampleRate * 2.8, ir = AC.createBuffer(2, len, AC.sampleRate);
+  for (let c = 0; c < 2; c++) { const d = ir.getChannelData(c); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.6); }
+  verb.buffer = ir;
+  const wet = AC.createGain(); wet.gain.value = .32; bus.connect(verb).connect(wet).connect(master);
+}
+function env(g, t, a, peak, d, sus, rel, end) {
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.linearRampToValueAtTime(peak, t + a);
+  g.gain.exponentialRampToValueAtTime(Math.max(.0001, peak * sus), t + a + d);
+  g.gain.setValueAtTime(Math.max(.0001, peak * sus), end);
+  g.gain.exponentialRampToValueAtTime(.0001, end + rel);
+}
+function voice(t, freq, dur, { type = "sine", vol = .1, a = .01, d = .2, sus = .5, rel = .2, cut = 0, vib = 0, detune = 0 } = {}) {
+  const o = AC.createOscillator(), g = AC.createGain();
+  o.type = type; o.frequency.value = freq; o.detune.value = detune;
+  let node = o;
+  if (cut) { const f = AC.createBiquadFilter(); f.type = "lowpass"; f.frequency.value = cut; o.connect(f); node = f; }
+  node.connect(g).connect(bus);
+  if (vib) { const l = AC.createOscillator(), lg = AC.createGain(); l.frequency.value = 5.3; lg.gain.setValueAtTime(0, t); lg.gain.linearRampToValueAtTime(freq * vib, t + .25); l.connect(lg).connect(o.frequency); l.start(t); l.stop(t + dur + rel + .05); }
+  env(g, t, a, vol, d, sus, rel, t + dur);
+  o.start(t); o.stop(t + dur + rel + .05);
+}
+const bass = (t, m) => { voice(t, mtof(m), BEAT * .7, { type: "triangle", vol: .34, a: .008, d: .18, sus: .45, rel: .12 }); voice(t, mtof(m - 12), BEAT * .6, { vol: .18, a: .01, d: .2, sus: .4, rel: .1 }); };
+const pah = (t, ch, v = 1) => ch.forEach(m => voice(t, mtof(m), BEAT * .3, { type: "triangle", vol: .05 * v, a: .005, d: .1, sus: .25, rel: .08, cut: 2400 }));
+const lead = (t, m, beats) => { const d = beats * BEAT * .92; voice(t, mtof(m), d, { type: "triangle", vol: .15, a: .035, d: .35, sus: .7, rel: .22, vib: .005 }); voice(t, mtof(m + 12), d, { vol: .035, a: .04, d: .3, sus: .6, rel: .2, vib: .005 }); };
+const bell = (t, m, v = .06) => { voice(t, mtof(m), .02, { vol: v, a: .002, d: .02, sus: .9, rel: 1.2 }); voice(t, mtof(m) * 3.01, .01, { vol: v * .25, a: .002, d: .01, sus: .9, rel: .4 }); };
+const pad = (t, ch, bars, v = .03) => ch.forEach((m, i) => voice(t, mtof(m), BAR * bars, { type: "sawtooth", vol: v, a: .35, d: .5, sus: .8, rel: .6, cut: 1300, detune: (i - 1) * 6 }));
+function tick(t, v = .05) {
+  const len = .05, buf = AC.createBuffer(1, AC.sampleRate * len, AC.sampleRate), d = buf.getChannelData(0);
+  for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / d.length, 4);
+  const s = AC.createBufferSource(), f = AC.createBiquadFilter(), g = AC.createGain();
+  s.buffer = buf; f.type = "highpass"; f.frequency.value = 6000; g.gain.value = v;
+  s.connect(f).connect(g).connect(bus); s.start(t);
+}
+const SCENE_STARTS = new Set(SCENES.map(s => s.s).filter(s => s > 0));
+function scheduleBeat(i, t) {
+  const barI = Math.floor(i / 3), bi = i % 3, bar = SONG[barI];
+  if (!bar) return;
+  const ch = CH[bar.ch];
+  if (bar.sec === "final") {
+    if (bi === 0) { bass(t, 38); bass(t, 50); pad(t, [62, 66, 69, 74], 2.2, .04); lead(t, 86, 6); [74, 78, 81, 86, 90].forEach((m, k) => bell(t + k * .06, m, .07)); }
+    return;
+  }
+  if (bar.sec === "ring") return;
+  if (bi === 0) bass(t, ch.b[barI % 2]);
+  else { pah(t, ch.c, bar.sec === "intro" ? .8 : 1); tick(t, bi === 1 ? .04 : .03); }
+  if (bi === 0 && (bar.sec === "B" || bar.sec === "A2")) pad(t, ch.c, 1, bar.sec === "B" ? .022 : .03);
+  if (bar.sec === "A2" && bi === 2) bell(t, ch.c[barI % 3] + 12, .045);
+  if (bar.sec === "intro" && bi === 0 && barI > 0) bell(t, [81, 78, 74][barI - 1], .05);
+  let off = 0;
+  for (const [m, d] of bar.mel) { if (off === bi) lead(t, m, d); off += d; }
+  if (bi === 0 && SCENE_STARTS.has(barI)) [74, 76, 78, 81, 83, 86].forEach((m, k) => bell(t + k * .045, m, .035));
+}
+function scheduler() {
+  while (t0 + nextBeat * BEAT < AC.currentTime + .15 && nextBeat < TOTAL_BARS * 3) { scheduleBeat(nextBeat, t0 + nextBeat * BEAT); nextBeat++; }
+}
+
+/* ───────────── transport & UI ───────────── */
+const startCard = document.getElementById("startCard"), endCard = document.getElementById("endCard");
+const startBtn = document.getElementById("startBtn"), againBtn = document.getElementById("againBtn");
+const bar = document.getElementById("bar"), fill = document.getElementById("fill"), nowEl = document.getElementById("now");
+const playBtn = document.getElementById("playBtn"), muteBtn = document.getElementById("muteBtn");
+const track = document.getElementById("track");
+SCENES.slice(1).forEach(s => { const d = document.createElement("div"); d.className = "tick"; d.style.left = (s.s / TOTAL_BARS * 100) + "%"; track.appendChild(d); });
+
+let state = "idle"; // idle | playing | ended
+async function start() {
+  if (!AC) initAudio();
+  if (AC.state === "suspended") await AC.resume();
+  t0 = AC.currentTime + .2; nextBeat = 0; flowers = []; lastFlowerBeat = -1;
+  clearInterval(schedTimer); schedTimer = setInterval(scheduler, 25); scheduler();
+  state = "playing";
+  startCard.hidden = true; endCard.hidden = true; bar.hidden = false;
+  setPlayIcon(true); poke();
+}
+startBtn.addEventListener("click", start);
+againBtn.addEventListener("click", start);
+function setPlayIcon(playing) {
+  playBtn.setAttribute("aria-label", playing ? "Pause" : "Play");
+  document.getElementById("playIcon").innerHTML = playing ? '<rect x="3" y="2" width="3.5" height="12"/><rect x="9.5" y="2" width="3.5" height="12"/>' : '<path d="M4 2l10 6-10 6z"/>';
+}
+playBtn.addEventListener("click", async () => {
+  if (!AC) return;
+  if (AC.state === "running") { await AC.suspend(); setPlayIcon(false); } else { await AC.resume(); setPlayIcon(true); }
+});
+muteBtn.addEventListener("click", () => {
+  muted = !muted; if (master) master.gain.setTargetAtTime(muted ? 0 : .9, AC.currentTime, .05);
+  muteBtn.setAttribute("aria-label", muted ? "Unmute" : "Mute");
+  document.getElementById("muteIcon").innerHTML = muted ? '<path d="M2 6h3l4-3v10l-4-3H2z"/><path d="M11 5.5l4 5M15 5.5l-4 5" stroke="currentColor" stroke-width="1.4"/>' : '<path d="M2 6h3l4-3v10l-4-3H2z"/><path d="M11 5.5a3.5 3.5 0 0 1 0 5" stroke="currentColor" stroke-width="1.4" fill="none"/>';
+});
+let idleTimer;
+function poke() { bar.classList.remove("idle"); clearTimeout(idleTimer); idleTimer = setTimeout(() => bar.classList.add("idle"), 2600); }
+addEventListener("pointermove", poke); addEventListener("keydown", e => {
+  poke();
+  if (e.code === "Space" && state === "playing" && e.target === document.body) { e.preventDefault(); playBtn.click(); }
+});
+
+/* ───────────── render loop ───────────── */
+let lastNow = performance.now(), lastSceneLabel = "";
+function frame(now) {
+  requestAnimationFrame(frame);
+  try { render(now); } catch (err) { console.error(err); }
+}
+function render(now) {
+  const dt = Math.min(.05, (now - lastNow) / 1000); lastNow = now;
+  let t;
+  if (state === "idle") t = 36 * BAR + ((now / 1000) % (8 * BAR)); // ambient: the golden round, behind the start card
+  else t = Math.max(0, AC.currentTime - t0);
+  if (state === "playing" && t >= TOTAL_BARS * BAR) { state = "ended"; endCard.hidden = false; bar.hidden = true; clearInterval(schedTimer); }
+  if (state === "ended") t = TOTAL_BARS * BAR - .001;
+  const beats = t / BEAT, bf = beats % 1, onDown = Math.floor(beats) % 3 === 0;
+  const pulse = Math.exp(-bf * 5);
+  const P = { dt: (AC && AC.state !== "running" && state === "playing") ? 0 : dt, beats, beat: pulse * (onDown ? 1 : .5), down: onDown ? pulse : 0 };
+  const barPos = t / BAR;
+  let si = SCENES.findIndex(s => barPos < s.e); if (si < 0) si = SCENES.length - 1;
+  const S = SCENES[si], lt = barPos - S.s, len = S.e - S.s;
+  ctx.globalAlpha = 1; ctx.globalCompositeOperation = "source-over";
+  const XF = .75;
+  if (si > 0 && lt < XF && state !== "idle") {
+    const Pr = SCENES[si - 1];
+    Pr.fn(barPos - Pr.s, t, { ...P, dt: 0 }, Pr.e - Pr.s);
+    ctx.save(); ctx.globalAlpha = ease(lt / XF);
+    S.fn(lt, t, P, len);
+    ctx.restore();
+  } else S.fn(lt, t, P, len);
+  if (state === "playing") {
+    fill.style.width = (clamp(barPos / TOTAL_BARS) * 100) + "%";
+    if (S.name !== lastSceneLabel) { nowEl.textContent = S.name; lastSceneLabel = S.name; }
+  }
+}
+
+function seek(sec) {
+  if (!AC || state !== "playing") return;
+  sec = clamp(sec, 0, TOTAL_BARS * BAR - .5);
+  t0 = AC.currentTime - sec; nextBeat = Math.ceil(sec / BEAT); flowers = [];
+}
+window.__seek = seek;
+track.addEventListener("click", e => { const r = track.getBoundingClientRect(); seek((e.clientX - r.left) / r.width * TOTAL_BARS * BAR); });
+track.style.cursor = "pointer";
+addEventListener("resize", () => { resize(); });
+resize();
+Promise.all([loaded, document.fonts ? document.fonts.load('400 40px "Italiana"').catch(() => {}) : null]).then(() => {
+  buildMedals();
+  startBtn.disabled = false; startBtn.textContent = "Begin the waltz";
+});
+requestAnimationFrame(frame);
+})();
+</script>
