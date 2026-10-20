@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700;900&display=block" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1080px; height: 1920px; overflow: hidden; background: #000; font-family: 'Heebo', 'Noto Color Emoji', sans-serif; }
+  #stage { position: absolute; inset: 0; overflow: hidden; }
+  #bg { position: absolute; inset: -100px; }
+  .layer { position: absolute; inset: 0; opacity: 0; }
+  .abs { position: absolute; }
+  .cx { left: 0; right: 0; text-align: center; }
+
+  /* the algorithm character */
+  #bot { position: absolute; left: 50%; width: 460px; height: 820px; margin-left: -230px; transform-origin: 50% 100%; }
+  #bot svg { width: 100%; height: 100%; overflow: visible; }
+
+  .bubble { position: absolute; padding: 30px 46px; border-radius: 56px; font-size: 68px; font-weight: 900; line-height: 1.2;
+            box-shadow: 0 12px 40px rgba(0,0,0,.35); transform-origin: 50% 100%; white-space: nowrap; }
+  .algo { background: #fff; color: #111; border-bottom-right-radius: 12px; }
+  .me { background: #1f8cff; color: #fff; border-bottom-left-radius: 12px; }
+
+  .pov { top: 150px; font-size: 76px; font-weight: 900; color: #fff; line-height: 1.2; padding: 0 50px;
+         text-shadow: 0 0 4px #000, 0 6px 0 #000; -webkit-text-stroke: 4px #000; paint-order: stroke fill; }
+  .cap { position: absolute; left: 50px; right: 50px; bottom: 250px; text-align: center; color: #fff; font-weight: 900; font-size: 70px; line-height: 1.25;
+         -webkit-text-stroke: 4px #000; paint-order: stroke fill; text-shadow: 0 6px 18px rgba(0,0,0,.9); }
+  .cap .w { display: inline-block; margin: 0 8px; }
+  .cap .hl { color: #ffe14d; }
+
+  #counter { top: 640px; font-size: 300px; font-weight: 900; color: #fff; direction: ltr; -webkit-text-stroke: 8px #000; paint-order: stroke fill; }
+  #counterLbl { top: 560px; font-size: 80px; font-weight: 900; color: #ffe14d; -webkit-text-stroke: 4px #000; paint-order: stroke fill; }
+  #clock { top: 380px; font-size: 110px; font-weight: 900; color: #ff4d5e; direction: ltr; text-shadow: 0 0 30px rgba(255,77,94,.8); }
+  #face { top: 1000px; font-size: 360px; }
+
+  .meme { position: absolute; inset: 0; opacity: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  .meme .t { font-size: 96px; font-weight: 900; color: #fff; -webkit-text-stroke: 5px #000; paint-order: stroke fill; margin-bottom: 30px; }
+  .meme .big { font-size: 280px; font-weight: 900; line-height: 1; }
+  .meme .small { font-size: 66px; font-weight: 900; color: #fff; margin-top: 40px; -webkit-text-stroke: 4px #000; paint-order: stroke fill; }
+
+  #final { top: 640px; }
+  #final .a, #final .b { display: block; font-weight: 900; white-space: nowrap; line-height: 1.05; }
+  #final .a { font-size: 170px; color: #fff; -webkit-text-stroke: 8px #000; paint-order: stroke fill; }
+  #final .b { font-size: 170px; color: #ffe14d; -webkit-text-stroke: 8px #000; paint-order: stroke fill; margin-top: 20px; }
+  #sorry { top: 1080px; font-size: 70px; font-weight: 900; color: #fff; -webkit-text-stroke: 4px #000; paint-order: stroke fill; }
+  #tag { top: 1420px; font-size: 62px; font-weight: 900; color: #111; }
+  #tag span { background: #fff; padding: 18px 40px; border-radius: 30px; display: inline-block; }
+
+  #flash { position: absolute; inset: 0; background: #fff; opacity: 0; }
+  #tint { position: absolute; inset: 0; background: #ff0033; mix-blend-mode: multiply; opacity: 0; }
+  #bars { position: absolute; inset: 0; opacity: 0;
+          background: linear-gradient(#000 0 180px, transparent 180px calc(100% - 180px), #000 calc(100% - 180px)); }
+  #progress { position: absolute; left: 0; bottom: 0; height: 10px; background: rgba(255,255,255,.9); }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="bg"></div>
+
+  <!-- A: POV intro + B: chat finale share the bot -->
+  <div class="layer" id="Lbot">
+    <div id="bot"></div>
+    <div id="bubbles"></div>
+  </div>
+
+  <!-- counter montage -->
+  <div class="layer" id="Lcount">
+    <div class="abs cx" id="clock">23:04</div>
+    <div class="abs cx" id="counterLbl">סרטון מס'</div>
+    <div class="abs cx" id="counter">1</div>
+    <div class="abs cx" id="face">🙂</div>
+  </div>
+
+  <!-- consequences memes -->
+  <div class="meme" id="M1"><div class="t">המבחן מחר:</div><div class="big" style="color:#ff3344;-webkit-text-stroke:8px #000;paint-order:stroke fill">48</div><div class="big">💀</div></div>
+  <div class="meme" id="M2"><div class="t">החברים באימון:</div><div class="big">🏃‍♂️🏃🏃‍♀️</div><div class="small">📸 תמונה קבוצתית... בלעדיך</div></div>
+  <div class="meme" id="M3"><div class="t">השינה שלך:</div><div class="big" style="color:#fff;-webkit-text-stroke:8px #000;paint-order:stroke fill;direction:ltr">404</div><div class="small" style="direction:ltr">NOT FOUND 😴</div></div>
+
+  <!-- final card -->
+  <div class="layer" id="Lfinal">
+    <div class="abs cx" id="final"><span class="a">אתה מחליט.</span><span class="b">לא הפיד.</span></div>
+    <div class="abs cx" id="sorry">(סורי אלגוריתם 💅)</div>
+    <div class="abs cx" id="tag"><span>תייגו חבר שצריך לשמוע את זה 👇</span></div>
+  </div>
+
+  <div class="abs cx pov" id="pov"></div>
+  <div class="cap" id="cap"></div>
+  <div id="tint"></div>
+  <div id="bars"></div>
+  <div id="flash"></div>
+  <div id="progress"></div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const lerp = (a, b, k) => a + (b - a) * k;
+const ease = k => k < .5 ? 4*k*k*k : 1 - Math.pow(-2*k + 2, 3) / 2;
+const outBack = k => { const c = 2.2; return 1 + (c+1)*Math.pow(k-1,3) + c*Math.pow(k-1,2); };
+const prog = (t, a, b) => clamp((t - a) / (b - a));
+const pop = (t, a, d = .22) => { const k = prog(t, a, a + d); return k === 0 ? 0 : outBack(k); };
+
+// the algorithm: a phone with a face. mood: beg | smug | shock | dead
+function botSVG(mood, t) {
+  const blink = (t % 2.3) < .1 && mood !== 'dead' && mood !== 'shock';
+  const screen = mood === 'dead' ? '#22222a' : 'url(#scr)';
+  let eyes = '', mouth = '', extra = '';
+  const eye = (x) => {
+    if (mood === 'dead') return `<path d="M${x-45},350 l90,90 M${x+45},350 l-90,90" stroke="#fff" stroke-width="22" stroke-linecap="round"/>`;
+    if (blink) return `<path d="M${x-50},395 q50,25 100,0" stroke="#111" stroke-width="16" fill="none" stroke-linecap="round"/>`;
+    const r = mood === 'shock' ? 70 : 66, pr = mood === 'beg' ? 46 : mood === 'shock' ? 18 : 30;
+    const dy = mood === 'smug' ? 18 : 0;
+    let e = `<circle cx="${x}" cy="395" r="${r}" fill="#fff" stroke="#111" stroke-width="10"/>
+             <circle cx="${x + (mood==='smug'? -12:0)}" cy="${405 + dy}" r="${pr}" fill="#111"/>`;
+    if (mood === 'beg') e += `<circle cx="${x-14}" cy="385" r="15" fill="#fff"/><circle cx="${x+16}" cy="420" r="8" fill="#fff"/>`;
+    if (mood === 'smug') e += `<path d="M${x-70},${325} L${x+70},${345}" stroke="#111" stroke-width="16" stroke-linecap="round"/>`;
+    return e;
+  };
+  eyes = eye(150) + eye(310);
+  if (mood === 'beg') {
+    const wob = Math.sin(t * 30) * 6;
+    mouth = `<path d="M185,${560+wob} q45,-35 90,0" stroke="#111" stroke-width="14" fill="none" stroke-linecap="round"/>`;
+    extra = `<ellipse cx="85" cy="500" rx="40" ry="22" fill="#ff7aa8" opacity=".8"/><ellipse cx="375" cy="500" rx="40" ry="22" fill="#ff7aa8" opacity=".8"/>`;
+    // tear
+    const ty = 470 + ((t * 160) % 140);
+    extra += `<path d="M120,${ty} q-18,30 0,40 q18,-10 0,-40z" fill="#6cc8ff"/>`;
+  } else if (mood === 'smug') {
+    mouth = `<path d="M150,540 q90,70 170,-10" stroke="#111" stroke-width="14" fill="none" stroke-linecap="round"/>`;
+  } else if (mood === 'shock') {
+    mouth = `<ellipse cx="230" cy="590" rx="60" ry="80" fill="#3a0d1a" stroke="#111" stroke-width="10"/>`;
+    extra = `<path d="M400,240 q22,40 0,55 q-22,-15 0,-55z" fill="#6cc8ff"/>`;
+  } else {
+    mouth = `<path d="M170,580 q30,-20 60,0 q30,20 60,0" stroke="#fff" stroke-width="12" fill="none" stroke-linecap="round"/>`;
+  }
+  return `<svg viewBox="0 0 460 820">
+    <defs><linearGradient id="scr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff4fd8"/><stop offset="1" stop-color="#5b5bff"/></linearGradient></defs>
+    <rect x="0" y="0" width="460" height="820" rx="70" fill="#111"/>
+    <rect x="22" y="22" width="416" height="776" rx="52" fill="${screen}"/>
+    <rect x="170" y="40" width="120" height="30" rx="15" fill="#111"/>
+    ${eyes}${mouth}${extra}
+    <path d="M-10,600 q-90,-40 -110,-140" stroke="#111" stroke-width="26" fill="none" stroke-linecap="round"/>
+    <path d="M470,600 q90,-40 110,-140" stroke="#111" stroke-width="26" fill="none" stroke-linecap="round"/>
+  </svg>`;
+}
+
+function caption(t, a, b, words, hl) {
+  if (t < a || t >= b) return null;
+  const per = Math.min(.32, (b - a - .5) / words.length);
+  return words.map((w, i) => {
+    const k = prog(t, a + i * per, a + i * per + .14);
+    return `<span class="w ${hl.includes(i) ? 'hl' : ''}" style="opacity:${k > 0 ? 1 : 0};transform:scale(${k ? lerp(1.5, 1, ease(k)) : 0})">${w}</span>`;
+  }).join(' ');
+}
+
+const BEAT = 60 / 140;
+window.render = function (t) {
+  ['Lbot', 'Lcount', 'M1', 'M2', 'M3', 'Lfinal'].forEach(id => $(id).style.opacity = 0);
+  let bg = '', pov = '', cap = null, shake = 0, flash = 0, tint = 0, bars = 0, zoom = 1;
+  // bounce on the beat (not during the dramatic silence)
+  const beatK = 1 - ((t % BEAT) / BEAT);
+  const onBeat = (t < 8.6 || t > 11.6) ? Math.pow(beatK, 6) : 0;
+
+  /* ---------- 0–2.2: POV intro ---------- */
+  if (t < 2.2) {
+    bg = 'radial-gradient(circle at 50% 45%, #5a2bd6, #1a0b46 70%)';
+    $('Lbot').style.opacity = 1;
+    const k = pop(t, .05, .35);
+    $('bot').style.top = '620px';
+    $('bot').style.transform = `scale(${k * (1 + onBeat * .04)}) rotate(${Math.sin(t * 5) * 4}deg)`;
+    $('bot').innerHTML = botSVG('beg', t);
+    pov = 'POV: אמרת "רק עוד סרטון אחד" 🤡';
+    const b = pop(t, .7);
+    $('bubbles').innerHTML = `<div class="bubble algo" style="right:120px;top:400px;transform:scale(${b})">רק עוד אחד... 🥺👉👈</div>`;
+    flash = .6 * (1 - prog(t, 0, .15));
+  }
+  /* ---------- 2.2–5.0: counter montage ---------- */
+  else if (t < 5.0) {
+    bg = `linear-gradient(180deg, #120a2e, #2b0f3f)`;
+    $('Lcount').style.opacity = 1;
+    const k = prog(t, 2.2, 4.9);
+    const n = Math.max(1, Math.round(Math.pow(183, ease(k))));
+    $('counter').textContent = n;
+    $('counter').style.transform = `scale(${1 + onBeat * .12})`;
+    const mins = Math.round(lerp(23 * 60 + 4, 27 * 60 + 12, ease(k)));
+    $('clock').textContent = String(Math.floor(mins / 60) % 24).padStart(2, '0') + ':' + String(mins % 60).padStart(2, '0');
+    const faces = ['🙂', '😐', '🥱', '😵‍💫', '🧟'];
+    $('face').textContent = faces[Math.min(4, Math.floor(k * 5))];
+    $('face').style.transform = `rotate(${Math.sin(t * 12) * 6}deg) scale(${1 + onBeat * .08})`;
+    pov = '';
+    cap = caption(t, 2.3, 5.0, ['עוד','דקה.','עוד','משחק.','עוד','סרטון.'], [1, 3, 5]);
+    zoom = lerp(1, 1.08, k);
+    flash = .7 * (1 - prog(t, 2.2, 2.35));
+  }
+  /* ---------- 5.0–8.0: consequences (vine boom x3) ---------- */
+  else if (t < 8.0) {
+    const i = Math.floor(t - 5.0), s = 5.0 + i, k = prog(t, s, s + 1);
+    const id = ['M1', 'M2', 'M3'][i];
+    $(id).style.opacity = 1;
+    bg = ['#2a0f12', '#0f2a16', '#101626'][i];
+    const p = pop(t, s, .18);
+    $(id).style.transform = `scale(${lerp(.4, 1, p) * lerp(1, 1.18, ease(k))}) rotate(${(i - 1) * 3}deg)`;
+    $(id).style.filter = `contrast(1.25) saturate(1.4)`;
+    shake = 26 * (1 - prog(t, s, s + .25));
+    tint = .45 * (1 - prog(t, s, s + .5));
+    flash = .5 * (1 - prog(t, s, s + .1));
+    cap = caption(t, 5.0, 8.0, ['כל','"עכשיו"','קטן','גונב','לך','"אחר','כך"','גדול.'], [1, 5, 6]);
+  }
+  /* ---------- 8.0–11.5: plot twist chat ---------- */
+  else if (t < 11.5) {
+    bg = 'radial-gradient(circle at 50% 30%, #5a2bd6, #1a0b46 70%)';
+    $('Lbot').style.opacity = 1;
+    let mood = 'beg';
+    if (t > 8.7) mood = 'shock';
+    if (t > 9.6) mood = 'beg';
+    if (t > 10.5) mood = 'dead';
+    $('bot').innerHTML = botSVG(mood, t);
+    $('bot').style.top = '150px';
+    // dramatic zoom at "לא."
+    const dz = ease(prog(t, 8.7, 8.85)) * (1 - prog(t, 9.4, 9.6));
+    const fall = ease(prog(t, 10.5, 10.9));
+    $('bot').style.transform = `scale(${.55 + dz * .4}) translateY(${dz * 200}px) rotate(${fall * -90 + (mood === 'beg' ? Math.sin(t*6)*3 : 0)}deg)`;
+    bars = dz;
+    const B = [
+      [8.05, 'algo', 'נו... עוד אחד? 🥺'],
+      [8.7, 'me', 'לא.'],
+      [9.6, 'algo', 'אבל... חתול עם משקפיים 🐱👓'],
+      [10.4, 'me', 'לילה טוב 😴'],
+    ];
+    let html = '';
+    B.forEach(([s, who, txt], j) => {
+      const p = pop(t, s);
+      if (!p) return;
+      const y = 990 + j * 120;
+      const side = who === 'algo' ? 'right:70px' : 'left:70px';
+      html += `<div class="bubble ${who}" style="${side};top:${y}px;font-size:60px;transform:scale(${p})${who==='me'&&j===1?`;font-size:${68 + dz*30}px`:''}">${txt}</div>`;
+    });
+    $('bubbles').innerHTML = html;
+    pov = t > 8.7 && t < 9.6 ? 'האלגוריתם כששמע "לא":' : '';
+    shake = 30 * (1 - prog(t, 8.7, 9.0)) + 18 * (1 - prog(t, 10.9, 11.1)) * (t > 10.9);
+    flash = .9 * (1 - prog(t, 8.7, 8.8));
+    cap = caption(t, 10.6, 11.5, ['מי','ששולט','ברגע,','שולט','בעתיד.'], [2, 4]);
+  }
+  /* ---------- 11.5–15: final ---------- */
+  else {
+    const hue = (t * 60) % 360;
+    bg = `linear-gradient(${160 + t * 20}deg, hsl(${hue},95%,60%), hsl(${(hue + 60) % 360},95%,55%))`;
+    $('Lfinal').style.opacity = 1;
+    const a = pop(t, 11.55), b = pop(t, 12.05);
+    const fin = $('final').children;
+    fin[0].style.transform = `scale(${a ? lerp(3, 1, clamp(a)) * (a > 1 ? a : 1) : 0})`;
+    fin[1].style.transform = `scale(${b ? lerp(3, 1, clamp(b)) * (b > 1 ? b : 1) : 0}) rotate(-3deg)`;
+    $('final').style.transform = `scale(${1 + onBeat * .05})`;
+    $('sorry').style.opacity = prog(t, 12.9, 13.0);
+    $('sorry').style.transform = `rotate(${Math.sin(t * 8) * 4}deg)`;
+    const g = pop(t, 13.6);
+    $('tag').style.transform = `scale(${g}) translateY(${Math.sin(t * 6) * 10}px)`;
+    shake = 28 * (1 - prog(t, 11.55, 11.8)) + 22 * (1 - prog(t, 12.05, 12.3)) * (t > 12.05);
+    flash = .9 * (1 - prog(t, 11.5, 11.65));
+  }
+
+  $('bg').style.background = bg;
+  $('bg').style.transform = `scale(${zoom + onBeat * .03})`;
+  const pv = $('pov');
+  if (pov !== pv.dataset.txt) { pv.textContent = pov; pv.dataset.txt = pov; }
+  pv.style.opacity = pov ? 1 : 0;
+  pv.style.top = bars > .05 ? '210px' : '150px';
+  $('cap').innerHTML = cap || '';
+  $('flash').style.opacity = flash;
+  $('tint').style.opacity = tint;
+  $('bars').style.opacity = bars;
+  const sx = shake ? Math.sin(t * 97) * shake : 0, sy = shake ? Math.cos(t * 71) * shake : 0;
+  $('stage').style.transform = `translate(${sx}px, ${sy}px)`;
+  $('progress').style.width = (t / 15 * 100) + '%';
+};
+window.render(0);
+</script>
+</body>
+</html>
