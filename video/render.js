@@ -1,11 +1,12 @@
 // Renders scene.html frame by frame into frames/NNNN.jpg (1080x1920, 30fps, 15s).
-// Usage: node render.js [fps]
+// Usage: node render.js [fps] [scene file]
 const path = require('path');
 const fs = require('fs');
 const { chromium } = require('playwright');
 
 const FPS = Number(process.argv[2] || 30);
 const DURATION = 15;
+const SCENE = process.argv[3] || 'scene.html';
 const out = path.join(__dirname, 'frames');
 
 (async () => {
@@ -13,7 +14,7 @@ const out = path.join(__dirname, 'frames');
   fs.mkdirSync(out);
   const browser = await chromium.launch();
   const page = await browser.newPage({ viewport: { width: 1080, height: 1920 } });
-  await page.goto('file://' + path.join(__dirname, 'scene.html'), { waitUntil: 'networkidle' });
+  await page.goto('file://' + path.join(__dirname, SCENE), { waitUntil: 'networkidle' });
   await page.evaluate(() => document.fonts.ready);
   const total = FPS * DURATION;
   for (let i = 0; i < total; i++) {
