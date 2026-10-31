@@ -14,3 +14,7 @@
 ```bash
 python3 -m http.server -d aya-serge 8000
 ```
+
+## Публичная ссылка
+
+После включения GitHub Pages: https://irenaspivak15.github.io/IrenaSpivak15/aya-serge/
