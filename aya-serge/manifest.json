@@ -1,0 +1,14 @@
+{
+  "name": "Ая и Серж: Сказка о горе и пути",
+  "short_name": "Ая и Серж",
+  "description": "Иллюстрированная сказка Ирены Спивак",
+  "lang": "ru",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f3ede2",
+  "theme_color": "#d9577e",
+  "icons": [
+    {"src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}
+  ]
+}
