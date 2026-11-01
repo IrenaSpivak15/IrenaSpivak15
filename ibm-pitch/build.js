@@ -131,8 +131,8 @@ async function icon(Comp, color, size = 256) {
   T(s, "״איפה הכסף?״ מחבר את נתוני העובדים, הכלים והחשמל, מוצא כפילויות ומציג רק המלצות שחוסכות כסף בלי לפגוע ברווח",
     { x: 0.9, y: 1.6, w: 11.5, h: 1.25, fontSize: 22, bold: true, color: C.background1, valign: "middle" });
   const steps = [
-    { ic: fa.FaPlug, h: "מתחברים", t: "HR, ITSM, רכש ורישיונות, ענן ומוני חשמל" },
-    { ic: fa.FaSearchDollar, h: "מזהים", t: "AI מאתר כפילויות, חוסר ניצול ובזבוז" },
+    { ic: fa.FaPlug, h: "מתחברים", t: "קטלוג נתונים אחד לעובדים, תמיכה, רישיונות, ענן וחשמל" },
+    { ic: fa.FaSearchDollar, h: "מזהים", t: "סוכני AI מאתרים כפילויות, חוסר ניצול ובזבוז" },
     { ic: fa.FaShieldAlt, h: "בודקים רווח", t: "כל המלצה עוברת סימולציה של השפעה על הכנסות ו-SLA" },
     { ic: fa.FaRocket, h: "פועלים", t: "תוכנית פעולה מדורגת לפי חיסכון נקי, עם מעקב ביצוע" },
   ];
@@ -262,28 +262,98 @@ async function icon(Comp, color, size = 256) {
   // ---------- 10. Architecture ----------
   pres.addSection({ title: "ביצוע" });
   s = add("ביצוע");
-  title(s, "בנוי על טכנולוגיות IBM");
+  title(s, "הארכיטקטורה: קטלוג נתונים ← אורקסטרציה ← פעולה");
   const cols = [
-    { h: "מקורות נתונים", items: ["HR ומערכות משימות", "ITSM וכרטיסי תמיכה", "רכש ורישיונות SaaS", "ענן ושרתים", "מוני חשמל ו-BMS"], fill: C.background2, tc: C.text1 },
-    { h: "שכבת הניתוח", items: ["watsonx.ai — זיהוי כפילויות", "Apptio — עלויות IT", "Turbonomic — ניצול משאבים", "Envizi — אנרגיה ופליטות"], fill: C.accent1, tc: C.background1 },
-    { h: "בקרה ותוצר", items: ["watsonx.governance — שקיפות", "מבחן הרווח", "דשבורד ניהולי", "עוזר שיחה: ״איפה הכסף?״"], fill: C.text2, tc: C.background1 },
+    { h: "מקורות נתונים", sub: "", items: ["HR ומשימות", "ITSM", "רכש ורישיונות", "Apptio ו-Turbonomic", "Envizi ומוני חשמל"], fill: C.background2, tc: C.text1, hc: C.text2 },
+    { h: "קטלוג נתונים", sub: "watsonx.data intelligence", items: ["קטלוג אחיד לכל המקורות", "מילון מונחים עסקי", "שושלת נתונים (lineage)", "מיסוך מידע אישי"], fill: C.accent1, tc: C.background1, hc: C.accent2 },
+    { h: "אורקסטרציה", sub: "watsonx Orchestrate", items: ["סוכן אנשים", "סוכן כלים", "סוכן חשמל", "סוכן ״מבחן רווח״"], fill: C.text2, tc: C.background1, hc: C.accent2 },
+    { h: "פעולה ובקרה", sub: "watsonx.governance", items: ["אישור מנהל ה-IT", "פתיחת קריאה / ביטול רישיון", "דשבורד ומעקב חיסכון"], fill: C.background2, tc: C.text1, hc: C.text2 },
   ];
-  const aw = 3.6, ag = 0.66, ax0 = W - 0.6 - aw;
-  for (let i = 0; i < 3; i++) {
-    const c = cols[i], x = ax0 - i * (aw + ag), y = 1.6;
-    card(s, x, y, aw, 4.9, c.fill, "architecture column " + (i + 1));
-    T(s, c.h, { x: x + 0.25, y: y + 0.2, w: aw - 0.5, h: 0.6, fontSize: 22, bold: true, color: i === 0 ? C.text2 : C.accent2, align: "center" });
-    T(s, c.items.map((t, k) => ({ text: t, options: { bullet: true, rtlMode: true, align: "right", breakLine: k < c.items.length - 1, paraSpaceAfter: 10 } })),
-      { x: x + 0.25, y: y + 1.0, w: aw - 0.5, h: 3.7, fontSize: 16, color: c.tc, valign: "top" });
-    if (i < 2) s.addImage({ data: await icon(fa.FaArrowLeft, H.accent2), x: x - ag / 2 - 0.2, y: y + 2.25, w: 0.4, h: 0.4, altText: "חץ", objectName: "arch arrow " + (i + 1) });
+  for (let i = 0; i < 4; i++) {
+    const c = cols[i], x = sx0 - i * (sw + sg), y = 1.55;
+    card(s, x, y, sw, 4.15, c.fill, "architecture column " + (i + 1));
+    T(s, c.h, { x: x + 0.2, y: y + 0.15, w: sw - 0.4, h: 0.5, fontSize: 20, bold: true, color: c.hc, align: "center" });
+    if (c.sub) s.addText(c.sub, { isTextBox: true, x: x + 0.15, y: y + 0.65, w: sw - 0.3, h: 0.4, fontSize: 13, italic: true, color: c.tc, align: "center" });
+    T(s, c.items.map((t, k) => ({ text: t, options: { bullet: true, rtlMode: true, align: "right", breakLine: k < c.items.length - 1, paraSpaceAfter: 8 } })),
+      { x: x + 0.2, y: y + 1.15, w: sw - 0.4, h: 2.9, fontSize: 15, color: c.tc, valign: "top" });
+    if (i < 3) s.addImage({ data: await icon(fa.FaArrowLeft, H.accent2), x: x - sg / 2 - 0.15, y: y + 1.9, w: 0.3, h: 0.3, altText: "חץ", objectName: "arch arrow " + (i + 1) });
   }
-  s.addNotes("משתלבים בכלים ש-IBM כבר מוכרת ללקוחות ארגוניים: Apptio, Turbonomic ו-Envizi, עם watsonx כשכבת ה-AI והממשל.");
+  card(s, 0.6, 5.95, 12.13, 0.8, C.accent2, "bob band");
+  s.addImage({ data: await icon(fa.FaCode, H.dk2), x: 12.0, y: 6.1, w: 0.5, h: 0.5, altText: "קוד", objectName: "bob band icon" });
+  T(s, "כל השכבות נבנות ומתוחזקות עם IBM Bob — שותף הפיתוח מבוסס ה-AI של IBM", { x: 0.9, y: 5.98, w: 10.9, h: 0.75, fontSize: 18, bold: true, color: C.text2, valign: "middle" });
+  s.addNotes("שלוש שכבות IBM: קטלוג הנתונים (watsonx.data intelligence / Knowledge Catalog) נותן מקור אמת אחד עם הרשאות ומיסוך; watsonx Orchestrate מנהל את הסוכנים; watsonx.governance מתעד ומבקר. IBM Bob הוא כלי הפיתוח שבעזרתו בונים את כל זה.");
 
-  // ---------- 11. Roadmap ----------
+  // ---------- 11. Orchestration flow ----------
+  s = add("ביצוע");
+  title(s, "איך זה עובד: סוכנים ב-watsonx Orchestrate");
+  const fw = 2.05, fg = 0.47, fy = 1.75, fh = 4.2;
+  const fx = (i) => W - 0.6 - fw - i * (fw + fg);
+  const flowArrow = async (i) => s.addImage({ data: await icon(fa.FaArrowLeft, H.accent2), x: fx(i) - fg / 2 - 0.15, y: fy + fh / 2 - 0.15, w: 0.3, h: 0.3, altText: "חץ", objectName: "flow arrow " + (i + 1) });
+  // 0: manager question
+  card(s, fx(0), fy, fw, fh, C.background2, "manager question");
+  await circleIcon(s, fa.FaUserTie, fx(0) + fw / 2 - 0.45, fy + 0.3, 0.9, C.text2, H.accent2, "מנהל IT");
+  T(s, "מנהל ה-IT שואל", { x: fx(0) + 0.1, y: fy + 1.35, w: fw - 0.2, h: 0.5, fontSize: 17, bold: true, color: C.text2, align: "center" });
+  T(s, "״איפה אפשר לחסוך 10% בלי לפגוע ב-SLA?״", { x: fx(0) + 0.15, y: fy + 1.9, w: fw - 0.3, h: 1.6, fontSize: 15, italic: true, color: C.text1, align: "center", valign: "top" });
+  await flowArrow(0);
+  // 1: orchestrator
+  card(s, fx(1), fy, fw, fh, C.text2, "orchestrator");
+  await circleIcon(s, fa.FaProjectDiagram, fx(1) + fw / 2 - 0.45, fy + 0.3, 0.9, C.accent1, "FFFFFF", "סוכן מתאם");
+  T(s, "סוכן מתאם", { x: fx(1) + 0.1, y: fy + 1.35, w: fw - 0.2, h: 0.5, fontSize: 17, bold: true, color: C.accent2, align: "center" });
+  T(s, "מפרק את השאלה ושולף נתונים מהקטלוג", { x: fx(1) + 0.15, y: fy + 1.9, w: fw - 0.3, h: 1.6, fontSize: 15, color: C.background1, align: "center", valign: "top" });
+  await flowArrow(1);
+  // 2: three agents stacked
+  const ag3 = [[fa.FaUsers, "סוכן אנשים"], [fa.FaToolbox, "סוכן כלים"], [fa.FaBolt, "סוכן חשמל"]];
+  const ah = (fh - 2 * 0.2) / 3;
+  for (let k = 0; k < 3; k++) {
+    const y = fy + k * (ah + 0.2);
+    card(s, fx(2), y, fw, ah, C.accent1, "agent " + (k + 1));
+    await circleIcon(s, ag3[k][0], fx(2) + fw - 0.7, y + ah / 2 - 0.27, 0.55, C.text2, H.accent2, ag3[k][1]);
+    T(s, ag3[k][1], { x: fx(2) + 0.05, y: y + ah / 2 - 0.25, w: fw - 0.8, h: 0.5, fontSize: 15, bold: true, color: C.background1, valign: "middle" });
+  }
+  await flowArrow(2);
+  // 3: profit agent
+  card(s, fx(3), fy, fw, fh, "FBF1D3", "profit agent");
+  await circleIcon(s, fa.FaShieldAlt, fx(3) + fw / 2 - 0.45, fy + 0.3, 0.9, C.text2, H.accent2, "מבחן רווח");
+  T(s, "סוכן ״מבחן רווח״", { x: fx(3) + 0.1, y: fy + 1.35, w: fw - 0.2, h: 0.5, fontSize: 17, bold: true, color: C.text2, align: "center" });
+  T(s, "מסנן המלצות שפוגעות בהכנסות או ב-SLA", { x: fx(3) + 0.15, y: fy + 1.9, w: fw - 0.3, h: 1.6, fontSize: 15, color: C.text1, align: "center", valign: "top" });
+  await flowArrow(3);
+  // 4: action
+  card(s, fx(4), fy, fw, fh, C.background2, "action");
+  await circleIcon(s, fa.FaCheckCircle, fx(4) + fw / 2 - 0.45, fy + 0.3, 0.9, C.accent1, "FFFFFF", "פעולה");
+  T(s, "המלצה ופעולה", { x: fx(4) + 0.1, y: fy + 1.35, w: fw - 0.2, h: 0.5, fontSize: 17, bold: true, color: C.text2, align: "center" });
+  T(s, "אחרי אישור המנהל: קריאת שירות, ביטול רישיון, כיבוי שרת", { x: fx(4) + 0.15, y: fy + 1.9, w: fw - 0.3, h: 1.9, fontSize: 15, color: C.text1, align: "center", valign: "top" });
+  T(s, "אדם מאשר כל פעולה (human-in-the-loop) · כל החלטה מתועדת ב-watsonx.governance", { x: 0.6, y: 6.2, w: 12.13, h: 0.5, fontSize: 16, bold: true, italic: true, color: C.accent1 });
+  s.addNotes("הסוכנים עובדים במקביל. שום פעולה לא מתבצעת אוטומטית בלי אישור המנהל — חשוב במיוחד בהמלצות שנוגעות לעובדים.");
+
+  // ---------- 12. Built with IBM Bob ----------
+  s = add("ביצוע");
+  title(s, "נבנה עם IBM Bob: מהר יותר, ובטוח יותר");
+  const bob = [
+    { ic: fa.FaPlug, h: "מחברים לקטלוג", t: "כתיבה ובדיקה של המחברים מכל מקור נתונים אל הקטלוג" },
+    { ic: fa.FaProjectDiagram, h: "סוכנים ל-Orchestrate", t: "פיתוח הכלים והלוגיקה של כל סוכן, כולל בדיקות" },
+    { ic: fa.FaLock, h: "אבטחה ומדיניות", t: "סריקת מידע רגיש ואכיפת מדיניות מובנות — קריטי כשמנתחים נתוני עובדים" },
+    { ic: fa.FaSyncAlt, h: "מודרניזציה אצל הלקוח", t: "התאמת סקריפטים ומערכות ישנות של הלקוח כדי שיוכלו להתחבר" },
+  ];
+  for (let i = 0; i < 4; i++) {
+    const b = bob[i], y = 1.6 + i * 1.22;
+    await circleIcon(s, b.ic, W - 0.6 - 0.85, y, 0.85, C.text2, H.accent2, b.h);
+    T(s, b.h, { x: 5.6, y: y - 0.05, w: 6.1, h: 0.45, fontSize: 19, bold: true, color: C.text2 });
+    T(s, b.t, { x: 5.6, y: y + 0.38, w: 6.1, h: 0.65, fontSize: 15, color: C.text1, valign: "top" });
+  }
+  card(s, 0.6, 1.6, 4.5, 2.4, C.text2, "bob stat 1");
+  T(s, "12 שבועות", { x: 0.8, y: 1.75, w: 4.1, h: 1.0, fontSize: 40, bold: true, color: C.accent2, align: "center" });
+  T(s, "היעד שלנו ל-MVP עובד, בזכות פיתוח עם Bob", { x: 0.8, y: 2.8, w: 4.1, h: 1.0, fontSize: 16, color: C.background1, align: "center", valign: "top" });
+  card(s, 0.6, 4.2, 4.5, 2.4, C.background2, "bob stat 2");
+  T(s, "45%", { x: 0.8, y: 4.35, w: 4.1, h: 1.0, fontSize: 40, bold: true, color: C.accent1, align: "center" });
+  T(s, "עלייה ממוצעת בפרודוקטיביות שדיווחו משתמשי Bob ב-IBM", { x: 0.8, y: 5.35, w: 4.1, h: 0.8, fontSize: 15, color: C.text1, align: "center", valign: "top" });
+  T(s, "מקור: IBM, אפריל 2026 (דיווח עצמי)", { x: 0.8, y: 6.15, w: 4.1, h: 0.35, fontSize: 11, italic: true, color: C.accent4, align: "center" });
+  s.addNotes("IBM Bob הוא שותף הפיתוח מבוסס ה-AI של IBM (זמין מאפריל 2026). אנחנו משתמשים בו כדי לבנות את המחברים והסוכנים מהר, ובזכות בקרות האבטחה המובנות שלו — לטפל בנתוני עובדים באחריות. נתון ה-45% הוא נתון של IBM עצמה.");
+
+  // ---------- 13. Roadmap ----------
   s = add("ביצוע");
   title(s, "מפת דרכים ל-12 חודשים");
   const rm = [
-    { q: "רבעון 1", h: "MVP", t: "מנועי כלים וחשמל, חיבור ל-Apptio ו-Turbonomic" },
+    { q: "רבעון 1", h: "MVP", t: "נבנה עם IBM Bob: קטלוג נתונים + סוכני כלים וחשמל" },
     { q: "רבעון 2", h: "פיילוט", t: "2 ארגונים, מדידת חיסכון מאומת מול קו בסיס" },
     { q: "רבעון 3", h: "מנוע אנשים", t: "הוספת ניתוח כפילויות משימות עם watsonx.governance" },
     { q: "רבעון 4", h: "השקה", t: "הפצה דרך שותפי IBM ו-10 לקוחות משלמים" },
@@ -299,7 +369,7 @@ async function icon(Comp, color, size = 256) {
   }
   s.addNotes("מתחילים בתחומים שבהם הנתונים זמינים והחיסכון מהיר (כלים, חשמל), ורק אחר כך מנוע האנשים — הרגיש יותר.");
 
-  // ---------- 12. Team ----------
+  // ---------- 14. Team ----------
   s = add("ביצוע");
   title(s, "הצוות");
   const team = [["[שם מלא]", "[תפקיד — למשל: מובילת מוצר]", "[ניסיון רלוונטי]"], ["[שם מלא]", "[תפקיד — למשל: Data / AI]", "[ניסיון רלוונטי]"], ["[שם מלא]", "[תפקיד — למשל: פיתוח]", "[ניסיון רלוונטי]"]];
@@ -313,12 +383,12 @@ async function icon(Comp, color, size = 256) {
   }
   s.addNotes("השלימו שמות, תפקידים וניסיון של חברי הצוות.");
 
-  // ---------- 13. Ask ----------
+  // ---------- 15. Ask ----------
   pres.addSection({ title: "סיכום" });
   s = add("סיכום", "DARK");
   T(s, "מה אנחנו מבקשים מ-IBM", { x: 0.6, y: 0.7, w: 12.13, h: 0.9, fontSize: 36, bold: true, color: C.background1 });
   const asks = [
-    { ic: fa.FaCogs, h: "גישה לטכנולוגיה", t: "סביבת watsonx, Apptio ו-Turbonomic לפיתוח" },
+    { ic: fa.FaCogs, h: "גישה לטכנולוגיה", t: "IBM Bob, watsonx Orchestrate ו-watsonx.data intelligence" },
     { ic: fa.FaBullseye, h: "לקוח פיילוט", t: "חיבור לארגון אחד-שניים מלקוחות IBM" },
     { ic: fa.FaHandshake, h: "ליווי מנטור", t: "מומחה FinOps / Sustainability מ-IBM" },
   ];
