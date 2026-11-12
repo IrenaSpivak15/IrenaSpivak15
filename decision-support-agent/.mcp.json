@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "warehouse": {
+      "command": "npx",
+      "args": ["-y", "<שרת-MCP-של-מסד-הנתונים>"],
+      "env": { "DB_URL": "${DECISION_DB_READONLY_URL}" }
+    },
+    "ml-platform": {
+      "command": "npx",
+      "args": ["-y", "<שרת-MCP-של-פלטפורמת-ה-ML>"],
+      "env": { "PROJECT_ID": "${ML_PROJECT_ID}" }
+    }
+  }
+}

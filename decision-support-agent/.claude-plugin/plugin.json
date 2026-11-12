@@ -1,0 +1,6 @@
+{
+  "name": "decision-support-agent",
+  "version": "1.0.0",
+  "description": "הופך סוגיה עסקית למערכת תומכת החלטה: דיוק הסוגיה, דרישות נתונים, בדיקת נתונים, שילוב ML ו-Deep Learning ובניית מערכת",
+  "author": { "name": "Irena Spivak | SimplEctive" }
+}
