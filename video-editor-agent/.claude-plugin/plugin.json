@@ -1,0 +1,6 @@
+{
+  "name": "video-editor-agent",
+  "version": "1.0.0",
+  "description": "סוכן עריכת וידאו קצר: חיתוך לפי תמלול, עיצוב בסגנון מאושר, הגשה לאישור ומחקר מתחרים",
+  "author": { "name": "Irena Spivak | SimplEctive" }
+}
