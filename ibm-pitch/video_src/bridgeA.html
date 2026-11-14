@@ -1,0 +1,14 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1920px;height:1080px;overflow:hidden;background:transparent}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.hl{position:absolute;left:192px;top:386px;width:202px;height:50px;border-radius:12px;border:3px solid #2ec8f0;background:rgba(46,200,240,.12);box-shadow:0 0 0 4000px rgba(2,6,10,.5),0 0 30px rgba(46,200,240,.8);animation:fadeIn .45s .2s both}
+.cur{position:absolute;left:0;top:0;width:40px;height:40px;animation:mv .75s .2s cubic-bezier(.3,.7,.2,1) both}
+@keyframes mv{from{transform:translate(1100px,820px);opacity:0}20%{opacity:1}to{transform:translate(300px,404px);opacity:1}}
+.ring{position:absolute;left:310px;top:415px;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;border:3px solid #2ec8f0;opacity:0;animation:ring .8s 1.0s both}
+@keyframes ring{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(9)}}
+.cover{position:absolute;left:0;right:0;top:985px;height:85px;background:#0b1018;animation:fadeIn .3s both}
+</style></head><body>
+<div class="cover"></div><div class="hl"></div><div class="ring"></div>
+<svg class="cur" viewBox="0 0 24 24"><path d="M3 2l7 19 2.6-7.6L20 11z" fill="#fff" stroke="#000" stroke-width="1.2"/></svg>
+</body></html>
