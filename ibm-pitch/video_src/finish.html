@@ -1,0 +1,21 @@
+<!DOCTYPE html><html dir="rtl" lang="he"><head><meta charset="utf-8"><style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1280px;height:720px;overflow:hidden;background:#05090d;font-family:"Liberation Sans",Arial,sans-serif;color:#fff}
+.bg{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,#0d2a33 0%,#061016 55%,#04070a 100%)}
+.grid{position:absolute;inset:-80px;background-image:linear-gradient(rgba(46,200,240,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(46,200,240,.07) 1px,transparent 1px);background-size:40px 40px;animation:pan 5s linear both}
+@keyframes pan{from{transform:translate(0,0)}to{transform:translate(30px,15px)}}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pop{0%{opacity:0;transform:scale(.85)}60%{opacity:1;transform:scale(1.05)}100%{opacity:1;transform:scale(1)}}
+.chips{position:absolute;top:190px;left:60px;right:60px;display:flex;justify-content:center;flex-wrap:wrap;gap:22px}
+.chip{padding:16px 30px;border-radius:44px;background:#0e1d24;border:2px solid #2a5566;font-size:30px;font-weight:bold;display:flex;align-items:center;gap:14px}
+.chip i{width:14px;height:14px;border-radius:50%;background:#6ee0a8;display:inline-block}
+.k1{animation:pop .5s .2s both}.k2{animation:pop .5s .55s both}.k3{animation:pop .5s .9s both}.k4{animation:pop .5s 1.25s both;border-color:#a78bfa}.k4 i{background:#a78bfa}
+.line{position:absolute;top:390px;left:0;right:0;text-align:center;font-size:52px;font-weight:bold;animation:up .8s 1.9s both}
+.line b{color:#6ee0a8}
+.sub{position:absolute;top:480px;left:0;right:0;text-align:center;font-size:26px;color:#8fb3c0;animation:up .8s 2.5s both}
+.sub b{color:#2ec8f0}
+</style></head><body><div class="bg"></div><div class="grid"></div>
+<div class="chips"><div class="chip k1"><i></i>חיבורים מהירים</div><div class="chip k2"><i></i>טבלאות מדויקות</div><div class="chip k3"><i></i>בדיקות גמישות</div><div class="chip k4"><i></i>הנחות לפי מודל AI חכם</div></div>
+<div class="line">— הכול במסלול אחד, <b>אופטימלי ובזמן אמת</b></div>
+<div class="sub">המערכת מנווטת — <b>IBM&nbsp;Bob</b> בונה</div>
+</body></html>
