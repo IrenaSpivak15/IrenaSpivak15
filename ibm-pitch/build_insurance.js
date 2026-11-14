@@ -105,7 +105,7 @@ async function icon(Comp, color, size = 256) {
   let s = add("פתיחה", "HERO");
   T(s, "IBM CHALLENGE 2026  ·  INSURANCE", { x: M, y: 1.35, w: 8.0, h: 0.5, fontSize: 15, bold: true, color: MINT, charSpacing: 3 });
   s.addText("איפה הכסף? לביטוח", Object.assign({ placeholder: "title" }, RTL));
-  s.addText("עוזר AI שממפה את ה-IT ובונה שכבה סמנטית ארגונית אחת — ורק אז מוצא כפילויות בכוח אדם, בחשמל ובטכנולוגיה. מורידים את יחס ההוצאות בלי לגעת ביחס התביעות.", Object.assign({ placeholder: "body" }, RTL));
+  s.addText("בוט שנכנס למחלקת ה-IT, ממפה כוח אדם, חשמל ומערכות, ובונה אנציקלופדיה ארגונית אחת — ומשם מוצא איפה הכסף, בלי לגעת ביחס התביעות.", Object.assign({ placeholder: "body" }, RTL));
   L(s, "eifo-money.fit", { x: M, y: 5.6, w: 4, h: 0.4, fontSize: 14, color: MUTED, align: "right" });
   s.addShape(pres.shapes.OVAL, { x: 9.5, y: 1.8, w: 3.2, h: 3.2, fill: { color: CARD }, line: { color: MINT, width: 2 }, objectName: "hero ring" });
   s.addImage({ data: await icon(fa.FaSearchDollar, H.accent1), x: 10.3, y: 2.6, w: 1.6, h: 1.6, altText: "זכוכית מגדלת על סימן כסף", objectName: "hero icon" });
@@ -116,7 +116,7 @@ async function icon(Comp, color, size = 256) {
   s = add("הבעיה");
   title(s, "יחס התביעות מכויל עד עשירית האחוז. יחס ההוצאות — לא");
   T(s, "יחס משולב (Combined Ratio) = יחס תביעות + יחס הוצאות  ·  חברה לדוגמה", { x: M, y: 1.3, w: CW, h: 0.45, fontSize: 16, color: MUTED });
-  const segs = [{ v: 68, lab: "יחס תביעות", c: NEUT, tc: TXT }, { v: 15, lab: "עמלות ורכישה", c: "56657A", tc: TXT }, { v: 12, lab: "תפעול: אנשים, חשמל, טכנולוגיה", c: MINT, tc: "0B0F14" }];
+  const segs = [{ v: 68, lab: "יחס תביעות", c: NEUT, tc: TXT }, { v: 15, lab: "עמלות ורכישה", c: "56657A", tc: TXT }, { v: 12, lab: "תפעול: אנשים, חשמל, מערכות IT", c: MINT, tc: "0B0F14" }];
   const unit = CW / 100; let xr = W - M;
   segs.forEach((g, i) => {
     const w = g.v * unit; xr -= w;
@@ -130,7 +130,7 @@ async function icon(Comp, color, size = 256) {
   const pcards = [
     { big: "₪200K", lab: "שווה נקודת בסיס אחת ביחס ההוצאות, בחברה עם ₪2 מיליארד פרמיות ברוטו", c: AMBER },
     { big: "0.1%", lab: "רמת הדיוק שבה האקטואר מכייל את יחס התביעות, את העתודות ואת התמחור", c: TXT },
-    { big: "קופסה שחורה", lab: "כוח אדם, חשמל וטכנולוגיה: שלושה מקורות הוצאה שאיש לא מצליב ביניהם", c: MINT },
+    { big: "קופסה שחורה", lab: "כוח אדם, חשמל ומערכות IT: שלושה מקורות הוצאה שאיש לא מצליב ביניהם", c: MINT },
   ];
   pcards.forEach((p, i) => {
     const x = col3(i), y = 3.85;
@@ -138,11 +138,41 @@ async function icon(Comp, color, size = 256) {
     T(s, p.big, { x: x + 0.3, y: y + 0.3, w: 3.2, h: 0.9, fontSize: i === 2 ? 30 : 40, bold: true, color: p.c, valign: "middle" });
     T(s, p.lab, { x: x + 0.3, y: y + 1.3, w: 3.2, h: 1.35, fontSize: 15, color: MUTED, valign: "top" });
   });
-  s.addNotes("מדברים בשפת האקטואר: יחס משולב. כל נקודת בסיס (0.01%) ביחס ההוצאות של חברה עם 2 מיליארד ₪ פרמיות שווה 200 אלף ₪ — בדיוק כמו נקודת בסיס ביחס התביעות. אבל את יחס התביעות מנתחים לעומק, ואת הוצאות התפעול — אנשים, חשמל וטכנולוגיה — לא. היחסים בגרף להמחשה.");
+  s.addNotes("מדברים בשפת האקטואר: יחס משולב. כל נקודת בסיס (0.01%) ביחס ההוצאות של חברה עם 2 מיליארד ₪ פרמיות שווה 200 אלף ₪ — בדיוק כמו נקודת בסיס ביחס התביעות. אבל את יחס התביעות מנתחים לעומק, ואת הוצאות התפעול — אנשים, חשמל ומערכות IT — לא. היחסים בגרף להמחשה.");
+
+  // ===== J. Journey =====
+  pres.addSection({ title: "הרעיון" });
+  s = add("הרעיון");
+  title(s, "הרעיון: נכנסים ל-IT, יוצאים עם אנציקלופדיה ארגונית");
+  T(s, "״איפה הכסף?״ מתחיל במיפוי. הכסף הוא מה שמגלים בסוף", { x: M, y: 1.18, w: CW, h: 0.42, fontSize: 16, color: MUTED });
+  const jr = [
+    { ic: fa.FaDoorOpen, h: "נכנסים ל-IT", t: "קריאה בלבד: קוד, תהליכים, טבלאות, דוחות וחשבוניות" },
+    { ic: fa.FaLayerGroup, h: "ממפים 3 נושאים", t: "כוח אדם, חשמל ומערכות IT" },
+    { ic: fa.FaSitemap, h: "מקשרים למחלקות", t: "כל נכס למחלקה שמשתמשת בו ולגורם אחראי" },
+    { ic: fa.FaSearchPlus, h: "צוללים לתהליכים", t: "למשל תביעות: כל המערכות, הטבלאות והדוחות" },
+    { ic: fa.FaBook, h: "אנציקלופדיה ארגונית", t: "ומשם רואים כפילויות — ואיפה הכסף" },
+  ];
+  const jw = 2.25, jg = (CW - 5 * jw) / 4;
+  s.addShape(pres.shapes.LINE, { x: M + jw / 2, y: 2.35, w: CW - jw, h: 0, line: { color: NEUT, width: 3 }, objectName: "journey line" });
+  for (let i = 0; i < 5; i++) {
+    const j = jr[i], x = W - M - jw - i * (jw + jg), last = i === 4;
+    await circleIcon(s, j.ic, x + jw / 2 - 0.55, 1.8, 1.1, last ? H.accent2 : H.accent4, last ? H.dk1 : H.accent1, j.h);
+    s.addText(String(i + 1), { isTextBox: true, x: x + jw / 2 + 0.3, y: 1.7, w: 0.4, h: 0.4, shape: pres.shapes.OVAL, fill: { color: MINT }, fontSize: 13, bold: true, color: "0B0F14", align: "center", valign: "middle", margin: 0, objectName: "journey number " + (i + 1) });
+    T(s, j.h, { x, y: 3.05, w: jw, h: 0.75, fontSize: 18, bold: true, color: last ? AMBER : TXT, align: "center", valign: "middle" });
+    T(s, j.t, { x: x + 0.05, y: 3.8, w: jw - 0.1, h: 1.0, fontSize: 14, color: MUTED, align: "center", valign: "top" });
+  }
+  const pills = [["המוצר", "איפה הכסף?"], ["המנוע", "IBM Bob + watsonx"], ["התוצר", "אנציקלופדיה ארגונית"]];
+  pills.forEach(([k, v], i) => {
+    const x = col3(i), y = 5.35;
+    box(s, x, y, 3.8, 1.25, i === 2 ? "17362A" : CARD, "pill " + (i + 1));
+    T(s, k, { x: x + 0.25, y: y + 0.12, w: 3.3, h: 0.4, fontSize: 13, color: MUTED, margin: 0 });
+    T(s, v, { x: x + 0.25, y: y + 0.52, w: 3.3, h: 0.55, fontSize: 20, bold: true, color: i === 2 ? MINT : TXT, margin: 0, valign: "middle" });
+  });
+  s.addNotes("זה הסיפור כולו בשקף אחד. באים למחלקת ה-IT, ממפים שלושה נושאים — כוח אדם, חשמל ומערכות IT — מקשרים כל נכס למחלקה ולגורם אחראי, צוללים לתהליכים כמו תביעות, ובסוף יש אנציקלופדיה ארגונית. הכפילויות והכסף הם תוצר של המפה.");
 
   // ===== 2a. Catalog built by Bob =====
-  pres.addSection({ title: "הבסיס: קטלוג" });
-  s = add("הבסיס: קטלוג");
+  pres.addSection({ title: "הבסיס: אנציקלופדיה" });
+  s = add("הבסיס: אנציקלופדיה");
   title(s, "שלב 1: IBM Bob בונה קטלוג של כל תוצרי ה-IT");
   T(s, "לפני שמחפשים כסף — ממפים. לכל תוצר: מה נכנס, מה יוצא, למה הוא מקושר ומי משתמש בו", { x: M, y: 1.18, w: CW, h: 0.42, fontSize: 16, color: MUTED });
   const reads = [
@@ -184,7 +214,7 @@ async function icon(Comp, color, size = 256) {
   s.addNotes("זה הבסיס של המוצר. IBM Bob נכנס ל-IT — קוד, תהליכים מתוזמנים, סכמות ודוחות — ובונה קטלוג: לכל תוצר מה נכנס, מה יוצא, למה הוא מקושר, מי משתמש בו וכמה הוא עולה. בלי הקטלוג אי אפשר לדעת ששני תהליכים עושים אותו דבר.");
 
   // ===== 2b. Semantic layer =====
-  s = add("הבסיס: קטלוג");
+  s = add("הבסיס: אנציקלופדיה");
   title(s, "שכבה סמנטית אחת: איזו טבלה משרתת איזה תהליך");
   const colT = { x: 10.23, w: 2.5 }, colP = { x: 5.55, w: 3.1 }, colB = { x: M, w: 2.1 };
   [["טבלאות", colT], ["תהליכי IT", colP], ["תהליכים עסקיים", colB]].forEach(([h, c]) =>
@@ -228,17 +258,109 @@ async function icon(Comp, color, size = 256) {
   });
   s.addNotes("זו השכבה הסמנטית: טבלאות, תהליכי IT ותהליכים עסקיים במפה אחת. עכשיו כולם רואים את אותה תמונה. הכפילויות קופצות לבד: שני תהליכים שבונים את אותו תעריף מאותן טבלאות, שני מנועים שמחשבים את אותה תחזית תזרים, וארבעה עותקים של אותו צילום רבעוני. רק מכאן ממשיכים לשאלה איפה הכסף.");
 
-  // ===== 3. Matrix: 3 components x 3 processes =====
-  s = add("הבעיה");
-  title(s, "מה הקטלוג מגלה: שלושה רכיבים × שלושה תהליכים");
-  const pil = [
-    { ic: fa.FaUsers, h: "כוח אדם", amt: "₪1.94M", cells: ["אותה הצעה נבדקת פעמיים — בסוכנות ובחברה", "טבלאות תעריף מוקלדות ידנית לשלוש מערכות", "שני צוותים מתאימים את אותם נתונים לרבעון"] },
-    { ic: fa.FaBolt, h: "חשמל", amt: "₪390K", cells: ["שרתי מערכת הליבה הישנה עדיין דולקים", "ריצות לילה על נתונים שלא השתנו", "חוות החישוב דולקת כל השנה, עובדת 4 שבועות"] },
-    { ic: fa.FaLaptopCode, h: "טכנולוגיה", amt: "₪1.47M", cells: ["אותו דוח חיצוני נשלף 3 פעמים על אותו מבוטח", "רישיונות כפולים לכלי מידול לאותם אקטוארים", "שלושה כלי BI לאותם דוחות הנהלה"] },
+  // ===== N. Network: topics x departments x owners =====
+  s = add("הבסיס: אנציקלופדיה");
+  title(s, "הרשת: 3 נושאים × מחלקות × גורם אחראי");
+  const topics = [[fa.FaUsers, "כוח אדם"], [fa.FaBolt, "חשמל"], [fa.FaLaptopCode, "מערכות IT"]];
+  const depts = [
+    ["תביעות", "סמנכ״ל תביעות", ["46 עובדים · 9 תהליכים", "14 שרתים · ארכיון מסמכים", "11 מערכות · 38 דוחות"]],
+    ["חיתום", "מנהל חיתום ראשי", ["32 עובדים · 6 תהליכים", "30 שרתי ליבה ישנים", "7 מערכות · 4 ספקי מידע"]],
+    ["תמחור", "אקטואר תמחור ראשי", ["12 אקטוארים · 5 מודלים", "שרתי GPU לריצות לילה", "6 כלי מידול"]],
+    ["כספים ואקטואריה", "אקטואר ממונה", ["18 עובדים · 4 סגירות", "40 שרתי חישוב", "3 כלי BI · 2 מנועי תזרים"]],
   ];
-  const procs = ["חיתום", "תמחור", "דוחות"];
-  const lw = 1.6, gp = 0.1, pw = (CW - lw - 3 * gp) / 3, hh = 1.05, rh = 1.25, y0 = 1.45;
-  for (let j = 0; j < 3; j++) {
+  const dw = 2.6, ng = 0.1, tw = (CW - dw - 3 * ng) / 3, th = 0.75, rh2 = 0.95, ny = 1.45;
+  for (let i = 0; i < 3; i++) {
+    const x = W - M - dw - ng - tw - i * (tw + ng);
+    box(s, x, ny, tw, th, "17362A", "topic header " + (i + 1), 0.1);
+    await circleIcon(s, topics[i][0], x + tw - 0.65, ny + 0.12, 0.5, BG, H.accent1, topics[i][1]);
+    T(s, topics[i][1], { x: x + 0.2, y: ny, w: tw - 0.95, h: th, fontSize: 19, bold: true, color: TXT, valign: "middle", margin: 0 });
+  }
+  for (let j = 0; j < 4; j++) {
+    const d = depts[j], y = ny + th + ng + j * (rh2 + ng);
+    box(s, W - M - dw, y, dw, rh2, CHIP, "dept " + (j + 1), 0.1);
+    T(s, d[0], { x: W - M - dw + 0.15, y: y + 0.08, w: dw - 0.3, h: 0.45, fontSize: 18, bold: true, color: AMBER, margin: 0, valign: "middle" });
+    s.addImage({ data: await icon(fa.FaUserCheck, H.accent1), x: W - M - 0.45, y: y + 0.6, w: 0.24, h: 0.24, altText: "גורם אחראי", objectName: "owner icon " + (j + 1) });
+    T(s, d[1], { x: W - M - dw + 0.15, y: y + 0.52, w: dw - 0.65, h: 0.36, fontSize: 13, color: MINT, margin: 0, valign: "middle" });
+    for (let i = 0; i < 3; i++) {
+      const x = W - M - dw - ng - tw - i * (tw + ng);
+      box(s, x, y, tw, rh2, CARD, `node ${j + 1}.${i + 1}`, 0.1);
+      T(s, d[2][i], { x: x + 0.2, y, w: tw - 0.4, h: rh2, fontSize: 15, color: TXT, valign: "middle", margin: 0 });
+    }
+  }
+  T(s, "כל צומת ברשת = נכס + מחלקה + גורם אחראי. יחד הם האנציקלופדיה הארגונית (מספרים להמחשה)", { x: M, y: 6.5, w: CW, h: 0.4, fontSize: 14, bold: true, italic: true, color: MINT });
+  s.addNotes("זו הרשת: מצד אחד שלושת הנושאים — כוח אדם, חשמל ומערכות IT. מצד שני המחלקות. לכל צומת יש גורם אחראי. כך כל שאלה — מי משתמש בשרת הזה, מי אחראי על הדוח הזה — מקבלת תשובה אחת.");
+
+  // ===== C1. Claims systems map =====
+  pres.addSection({ title: "צלילה: תביעות" });
+  s = add("צלילה: תביעות");
+  title(s, "צוללים לתביעות: כל המערכות שמשרתות את התהליך");
+  const stages = [
+    ["פתיחת תביעה", "מנהלת המוקד", [["מוקד — Salesforce", 1], ["אפליקציית לקוח", 0], ["פורטל סוכנים", 0]]],
+    ["שמאות והערכה", "מנהל השמאות", [["פורטל שמאים", 0], ["מערכת תביעות ליבה", 1], ["סיכום מסמכים — AI", 0]]],
+    ["יישוב ותשלום", "מנהל יישוב תביעות", [["מערכת תביעות ליבה", 0], ["תשלומים — SAP", 0], ["גיליון אישורים", 1]]],
+    ["שיבוב וגבייה", "מנהלת שיבוב", [["מערכת שיבוב", 0], ["גבייה — SAP", 0]]],
+    ["עתודות ודיווח", "האקטואר הממונה", [["Power BI — תפעול", 2], ["Qlik — כספים", 2], ["ResQ — אקטואריה", 2]]],
+  ];
+  const sw5 = (CW - 4 * 0.15) / 5;
+  for (let i = 0; i < 5; i++) {
+    const st = stages[i], x = W - M - sw5 - i * (sw5 + 0.15);
+    box(s, x, 1.4, sw5, 0.85, "17362A", "stage " + (i + 1), 0.1);
+    T(s, st[0], { x: x + 0.1, y: 1.45, w: sw5 - 0.2, h: 0.42, fontSize: 16, bold: true, color: TXT, align: "center", margin: 0, valign: "middle" });
+    T(s, st[1], { x: x + 0.1, y: 1.85, w: sw5 - 0.2, h: 0.33, fontSize: 12, color: MINT, align: "center", margin: 0, valign: "middle" });
+    if (i < 4) s.addImage({ data: await icon(fa.FaArrowLeft, H.lt2), x: x - 0.13, y: 1.73, w: 0.11, h: 0.18, altText: "חץ", objectName: "stage arrow " + (i + 1) });
+    st[2].forEach(([nm, flag], k) => {
+      const y = 2.45 + k * 0.62, dup = flag > 0;
+      s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x, y, w: sw5, h: 0.5, rectRadius: 0.08, fill: { color: dup ? "3A3020" : CARD }, line: { color: dup ? AMBER : CARD, width: 1.25 }, objectName: `system ${i + 1}.${k + 1}` });
+      T(s, nm, { x: x + 0.08, y, w: sw5 - 0.16, h: 0.5, fontSize: 13, bold: dup, color: dup ? AMBER : TXT, align: "center", valign: "middle", margin: 0 });
+    });
+  }
+  s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: M, y: 4.4, w: CW, h: 0.6, rectRadius: 0.1, fill: { color: "3A3020" }, line: { color: AMBER, width: 1.25 }, objectName: "documents row" });
+  T(s, "לאורך כל התהליך: מסמכי התביעה נשמרים בשתי מערכות — FileNet ו-SharePoint", { x: M + 0.2, y: 4.4, w: CW - 0.4, h: 0.6, fontSize: 15, bold: true, color: AMBER, valign: "middle", margin: 0 });
+  const cst = [["11 מערכות", "משרתות את תהליך התביעות"], ["3 דוחות", "עונים על אותה שאלה, מנתונים שונים"], ["פעמיים", "תביעה מוקלדת במוקד ובמערכת הליבה"]];
+  cst.forEach(([b, l], i) => {
+    const x = col3(i), y = 5.25;
+    box(s, x, y, 3.8, 1.4, CARD, "claims stat " + (i + 1));
+    T(s, b, { x: x + 0.25, y: y + 0.12, w: 3.3, h: 0.65, fontSize: 28, bold: true, color: i === 0 ? TXT : AMBER, margin: 0, valign: "middle" });
+    T(s, l, { x: x + 0.25, y: y + 0.8, w: 3.3, h: 0.45, fontSize: 14, color: MUTED, margin: 0, valign: "middle" });
+  });
+  s.addNotes("צלילה לתהליך אחד — תביעות. הבוט ממפה כל שלב, את המערכות שמשרתות אותו ואת הגורם האחראי. בזהב: כפילויות — תביעה שמוקלדת פעמיים, גיליון אקסל במקביל למערכת, שתי מערכות מסמכים ושלושה דוחות דיווח. שמות המערכות הם דוגמאות לכלים נפוצים.");
+
+  // ===== C2. Same question, three answers =====
+  s = add("צלילה: תביעות");
+  title(s, "אותה שאלה, שלוש תשובות: כמה תביעות פתוחות יש?");
+  const reps = [
+    { tool: "Power BI", dept: "תפעול תביעות", n: "12,480", src: "claims_core.status", def: "תביעה שלא סומנה כסגורה במערכת הליבה", own: "מנהל יישוב תביעות" },
+    { tool: "Qlik", dept: "כספים", n: "11,920", src: "sap_payments.open_items", def: "תביעה שיש לה תשלום פתוח בהנהלת החשבונות", own: "החשב" },
+    { tool: "ResQ", dept: "אקטואריה", n: "12,950", src: "claims_snapshot_eom", def: "צילום לסוף החודש, כולל תביעות שנפתחו מחדש", own: "האקטואר הממונה" },
+  ];
+  reps.forEach((r, i) => {
+    const x = col3(i), y = 1.4, h = 3.75;
+    box(s, x, y, 3.8, h, CARD, "report card " + (i + 1));
+    s.addText(r.tool, { isTextBox: true, x: x + 3.8 - 0.25 - 1.2, y: y + 0.25, w: 1.2, h: 0.38, shape: pres.shapes.ROUNDED_RECTANGLE, rectRadius: 0.19, fill: { color: CHIP }, fontSize: 12, bold: true, color: AMBER, align: "center", valign: "middle", margin: 0, objectName: "report tool " + (i + 1) });
+    T(s, r.dept, { x: x + 0.25, y: y + 0.22, w: 2.2, h: 0.44, fontSize: 16, bold: true, color: TXT, align: "left", margin: 0, valign: "middle" });
+    L(s, r.n, { x: x + 0.25, y: y + 0.8, w: 3.3, h: 0.85, fontSize: 44, bold: true, color: AMBER, align: "right", margin: 0, valign: "middle" });
+    L(s, r.src, { x: x + 0.25, y: y + 1.7, w: 3.3, h: 0.32, fontSize: 11, fontFace: "Courier New", color: MUTED, align: "right", margin: 0 });
+    T(s, r.def, { x: x + 0.25, y: y + 2.1, w: 3.3, h: 0.85, fontSize: 15, color: TXT, valign: "top", margin: 0 });
+    T(s, "גורם אחראי: " + r.own, { x: x + 0.25, y: y + 3.1, w: 3.3, h: 0.4, fontSize: 13, color: MINT, margin: 0, valign: "middle" });
+  });
+  box(s, M, 5.35, CW, 1.4, "17362A", "encyclopedia entry");
+  await circleIcon(s, fa.FaBook, W - M - 1.0, 5.6, 0.85, BG, H.accent2, "ערך באנציקלופדיה");
+  T(s, [{ text: "ערך באנציקלופדיה: ״תביעה פתוחה״", options: { bold: true, color: MINT, breakLine: true, rtlMode: true, align: "right" } }, { text: "הגדרה אחת, טבלת מקור אחת ובעלים אחד: האקטואר הממונה. פער של 1,030 תביעות בין הדוחות נסגר, ומתפנה כמשרה של התאמות ידניות — ₪240K בשנה", options: { color: TXT, rtlMode: true, align: "right" } }],
+    { x: M + 0.3, y: 5.42, w: CW - 1.6, h: 1.26, fontSize: 15, valign: "middle", margin: 0 });
+  s.addNotes("זו הדוגמה החזקה ביותר לאקטוארים: שלושה דוחות עונים על אותה שאלה — כמה תביעות פתוחות — ומקבלים שלוש תשובות, כי כל אחד מחשב מנתונים אחרים ובהגדרה אחרת. האנציקלופדיה יוצרת ערך אחד עם הגדרה ובעלים. זה חוסך זמן התאמות, ובעיקר נותן לעתודות ולדוחות בסיס נתונים אחד. המספרים להמחשה.");
+
+  // ===== 3. Matrix: 3 components x 4 processes =====
+  pres.addSection({ title: "ממצאים" });
+  s = add("ממצאים");
+  title(s, "מה האנציקלופדיה מגלה: 3 נושאים × 4 תהליכים");
+  const pil = [
+    { ic: fa.FaUsers, h: "כוח אדם", amt: "₪2.18M", cells: ["אותה הצעה נבדקת פעמיים — בסוכנות ובחברה", "טבלאות תעריף מוקלדות ידנית לשלוש מערכות", "שני צוותים מתאימים את אותם נתונים לרבעון", "שלושה צוותים מפיקים דוח תביעות פתוחות"] },
+    { ic: fa.FaBolt, h: "חשמל", amt: "₪435K", cells: ["שרתי מערכת הליבה הישנה עדיין דולקים", "ריצות לילה על נתונים שלא השתנו", "חוות החישוב דולקת כל השנה, עובדת 4 שבועות", "ארכיון המסמכים נשמר בשתי מערכות"] },
+    { ic: fa.FaLaptopCode, h: "מערכות IT", amt: "₪1.47M", cells: ["אותו דוח חיצוני נשלף 3 פעמים על אותו מבוטח", "רישיונות כפולים לכלי מידול לאותם אקטוארים", "שלושה כלי BI לאותם דוחות הנהלה", "סיכום תיקי תביעה על מודל AI יקר"] },
+  ];
+  const procs = ["חיתום", "תמחור", "דוחות", "תביעות"];
+  const lw = 1.6, gp = 0.1, pw = (CW - lw - 3 * gp) / 3, hh = 0.95, rh = 0.88, y0 = 1.4;
+  for (let j = 0; j < 4; j++) {
     const y = y0 + hh + gp + j * (rh + gp);
     box(s, W - M - lw, y, lw, rh, CHIP, "process label " + (j + 1), 0.1);
     T(s, procs[j], { x: W - M - lw, y, w: lw - 0.2, h: rh, fontSize: 20, bold: true, color: AMBER, valign: "middle" });
@@ -246,26 +368,25 @@ async function icon(Comp, color, size = 256) {
   for (let i = 0; i < 3; i++) {
     const p = pil[i], x = W - M - lw - gp - pw - i * (pw + gp);
     box(s, x, y0, pw, hh, "17362A", "pillar header " + (i + 1), 0.1);
-    await circleIcon(s, p.ic, x + pw - 0.72, y0 + 0.25, 0.55, BG, H.accent1, p.h);
+    await circleIcon(s, p.ic, x + pw - 0.72, y0 + 0.2, 0.55, BG, H.accent1, p.h);
     T(s, p.h, { x: x + 1.25, y: y0 + 0.2, w: pw - 2.0, h: 0.65, fontSize: 19, bold: true, color: TXT, valign: "middle", margin: 0 });
     T(s, p.amt, { x: x + 0.12, y: y0 + 0.2, w: 1.1, h: 0.65, fontSize: 17, bold: true, color: AMBER, align: "left", valign: "middle", margin: 0 });
-    for (let j = 0; j < 3; j++) {
+    for (let j = 0; j < 4; j++) {
       const y = y0 + hh + gp + j * (rh + gp);
       box(s, x, y, pw, rh, CARD, `cell ${i + 1}.${j + 1}`, 0.1);
-      T(s, p.cells[j], { x: x + 0.2, y, w: pw - 0.4, h: rh, fontSize: 15, color: TXT, valign: "middle" });
+      T(s, p.cells[j], { x: x + 0.2, y, w: pw - 0.4, h: rh, fontSize: 14, color: TXT, valign: "middle" });
     }
   }
-  T(s, "ועוד בטכנולוגיה: AI יקר, זיכויי SLA וחשבוניות כפולות. סכומים שנתיים, חברה מדומה עם ₪2 מיליארד פרמיות", { x: M, y: 6.55, w: CW, h: 0.35, fontSize: 12, italic: true, color: MUTED });
-  s.addNotes("זה לב המצגת: שלושת הרכיבים — כוח אדם, חשמל וטכנולוגיה — מול שלושת התהליכים שאקטואר מכיר: חיתום, תמחור ודוחות. כל תא הוא ממצא קונקרטי שמפורט בשקפים הבאים.");
+  T(s, "ועוד במערכות IT: זיכויי SLA וחשבוניות כפולות. סכומים שנתיים, חברה מדומה עם ₪2 מיליארד פרמיות", { x: M, y: 6.55, w: CW, h: 0.35, fontSize: 12, italic: true, color: MUTED });
+  s.addNotes("זה לב המצגת: שלושת הרכיבים — כוח אדם, חשמל ומערכות IT — מול שלושת התהליכים שאקטואר מכיר: חיתום, תמחור ודוחות. כל תא הוא ממצא קונקרטי שמפורט בשקפים הבאים.");
 
   // ===== 4-7. Component deep dives =====
-  pres.addSection({ title: "ממצאים" });
   await domainSlide("ממצאים", "כוח אדם: אותה עבודה, פעמיים — בלי לפטר אף אחד",
     "ממצאים לדוגמה מיומני משימות ושעות. ההמלצה היא הסבה לעבודה בעלת ערך, לא צמצום", [
       { tag: "חיתום", amt: "₪1.1M בשנה", code: "DUP_UW_REVIEW", conf: 90, title: "אותה הצעה נבדקת פעמיים — בסוכנות ובחברה", detail: "38% מהצעות הרכב בסיכון נמוך עוברות שתי בדיקות ידניות זהות. כ-4.5 משרות בשנה", action: "אישור אוטומטי לסיכון נמוך, והסבת החתמים לסיכונים מורכבים" },
       { tag: "תמחור", amt: "₪360K בשנה", code: "MANUAL_RATE_ENTRY", conf: 94, title: "טבלאות תעריף מוקלדות ידנית לשלוש מערכות", detail: "אחרי כל עדכון תעריף הצוות מקליד את הטבלאות לשלוש מערכות ובודק פעמיים. כ-1.5 משרות", action: "העלאה אוטומטית ממודל התמחור ובדיקה אחת" },
       { tag: "דוחות", amt: "₪480K בשנה", code: "DUP_RECONCILIATION", conf: 92, title: "שני צוותים מתאימים את אותם נתונים לרבעון", detail: "האקטואריה והכספים מתאימים כל אחד בנפרד את נתוני הפוליסות לדוח הרבעוני, שלושה שבועות בכל רבעון", action: "התאמה אחת משותפת. האקטוארים מתפנים לניתוח" },
-    ], "כוח אדם: הנושא הרגיש ביותר. המסר: לא מפטרים — מפנים זמן של חתמים ואקטוארים לעבודה שמשפרת את יחס התביעות. 8 משרות בסך הכול.");
+    ], "כוח אדם: הנושא הרגיש ביותר. המסר: לא מפטרים — מפנים זמן של חתמים ואקטוארים לעבודה שמשפרת את יחס התביעות. 8 משרות כאן, ועוד כמשרה בדוחות התביעות.");
 
   await domainSlide("ממצאים", "חשמל: שרתים שדולקים כשאף אחד לא מחשב",
     "ממצאים לדוגמה ממוני החשמל ומניצול השרתים. יחד: כ-650 מגה-ואט-שעה וכ-300 טון CO₂ בשנה", [
@@ -274,19 +395,19 @@ async function icon(Comp, color, size = 256) {
       { tag: "דוחות", amt: "₪170K בשנה", code: "IDLE_GRID_FARM", conf: 93, title: "חוות החישוב דולקת כל השנה, עובדת 4 שבועות", detail: "40 שרתי חישוב לתחזיות התזרים הרבעוניות, בניצול של 6% מחוץ לסגירת הרבעון", action: "כיבוי בין סגירות, או חישוב בענן לפי דרישה" },
     ], "חשמל: החישוב לפי כ-0.6 ₪ לקוט״ש כולל קירור, ומקדם פליטה של כ-0.47 ק״ג CO₂ לקוט״ש. הנחות להמחשה — לבדוק מול התעריף ומקדם הפליטה העדכניים.");
 
-  await domainSlide("ממצאים", "טכנולוגיה: משלמים פעמיים על מידע ועל כלים",
+  await domainSlide("ממצאים", "מערכות IT: משלמים פעמיים על מידע ועל כלים",
     "ממצאים לדוגמה מחשבוניות ספקי המידע, מרישיונות הכלים ומיומני השימוש", [
       { tag: "ספקי מידע", amt: "₪410K בשנה", code: "DUP_EXT_DATA_PULL", conf: 97, title: "אותו דוח חיצוני נשלף 3 פעמים על אותו מבוטח", detail: "היסטוריית תביעות ודירוג אשראי נשלפים בהצעה, בחיתום ובחידוש — בתוך 30 יום, בתשלום לכל שליפה", action: "שמירת הדוח ל-90 יום לפי ת.ז. — אותו מידע, אותה איכות חיתום" },
       { tag: "SAS", amt: "₪260K בשנה", code: "DUP_MODELING_SEATS", conf: 96, title: "14 אקטוארים מחזיקים שני כלי מידול", detail: "גם רישיון SAS וגם רישיון לכלי GLM מסחרי. בנוסף, 9 מושבים שלא נפתחו ב-90 הימים האחרונים", action: "איחוד לכלי אחד לכל צוות וביטול המושבים הרדומים" },
       { tag: "Power BI", amt: "₪220K בשנה", code: "DUP_BI_STACK", conf: 94, title: "שלושה כלי BI מפיקים את אותם דוחות הנהלה", detail: "דוח יחס התביעות החודשי קיים בשלושה כלים שונים, עם שלושה צוותי תחזוקה", action: "בחירת כלי אחד ומעבר הדרגתי של הדוחות" },
-    ], "טכנולוגיה, חלק א: מידע, רישיונות ודוחות — בחיתום, בתמחור ובדוחות.");
+    ], "מערכות IT, חלק א: מידע, רישיונות ודוחות — בחיתום, בתמחור ובדוחות.");
 
-  await domainSlide("ממצאים", "טכנולוגיה: AI, חוזים וחשבוניות",
+  await domainSlide("ממצאים", "מערכות IT: בינה מלאכותית, חוזים וחשבוניות",
     "ממצאים לדוגמה מחשבונות ה-AI, מחוזי הספקים, מהנהלת החשבונות ומהבנק", [
       { tag: "Anthropic", amt: "₪214K בשנה", code: "AI_FLAGSHIP_OVERUSE", conf: 95, title: "סיכום תיקי תביעה רץ על מודל הדגל היקר", detail: "סיווג וסיכום מסמכים פשוטים במודל הגדול, בלי שמירת ההנחיה הקבועה במטמון", action: "מעבר למודל קטן מאותה משפחה — דיוק דומה, כחמישית מהמחיר" },
       { tag: "Microsoft 365", amt: "₪60K זיכוי", code: "SLA_CREDIT_UNCLAIMED", conf: 88, title: "זמינות מתחת ל-99.9% — וזיכוי שלא נדרש", detail: "לפי הסכם רמת השירות של מיקרוסופט ושני ספקים נוספים, חודש עם זמינות נמוכה מזכה בזיכוי — ואיש לא דרש אותו", action: "הגשת בקשות זיכוי ומעקב חודשי אחרי עמידת הספקים בהתחייבות" },
       { tag: "מוסכים", amt: "₪310K להחזר", code: "DUP_VENDOR_INVOICE", conf: 97, title: "אותה חשבונית שולמה פעמיים", detail: "חשבונית מוסך שולמה בהעברה בנקאית ושוב דרך מערכת התביעות, עם מספר תיק תביעה זהה", action: "דרישת החזר מהספק וחסימת תשלום כפול לפי מספר תיק" },
-    ], "טכנולוגיה, חלק ב: כאן גם ממצא ה-SLA — ההתחייבות של מיקרוסופט ל-99.9% זמינות חודשית מזכה בזיכוי כשהיא לא מתקיימת.");
+    ], "מערכות IT, חלק ב: כאן גם ממצא ה-SLA — ההתחייבות של מיקרוסופט ל-99.9% זמינות חודשית מזכה בזיכוי כשהיא לא מתקיימת.");
 
   // ===== 7a. Tech stack map =====
   s = add("ממצאים");
@@ -407,7 +528,7 @@ async function icon(Comp, color, size = 256) {
   T(s, [
     { text: "מצאתי 3 ממצאים בתמחור, בסך ₪715K בשנה", options: { bold: true, breakLine: true, paraSpaceAfter: 8, rtlMode: true, align: "right" } },
     { text: "כוח אדם: הקלדה ידנית של טבלאות תעריף — ₪360K", options: { bullet: true, breakLine: true, paraSpaceAfter: 4, rtlMode: true, align: "right" } },
-    { text: "טכנולוגיה: רישיונות כפולים לכלי מידול — ₪260K", options: { bullet: true, breakLine: true, paraSpaceAfter: 4, rtlMode: true, align: "right" } },
+    { text: "מערכות IT: רישיונות כפולים לכלי מידול — ₪260K", options: { bullet: true, breakLine: true, paraSpaceAfter: 4, rtlMode: true, align: "right" } },
     { text: "חשמל: ריצות לילה על נתונים שלא השתנו — ₪95K", options: { bullet: true, breakLine: true, paraSpaceAfter: 8, rtlMode: true, align: "right" } },
     { text: "אף אחד מהם לא משנה את מודל התמחור. לפתוח משימה לצוות?", options: { color: MINT, rtlMode: true, align: "right" } },
   ], { x: 1.05, y: 2.95, w: 6.0, h: 3.4, fontSize: 15, color: TXT, valign: "top" });
@@ -428,30 +549,53 @@ async function icon(Comp, color, size = 256) {
   pres.addSection({ title: "ערך" });
   s = add("ערך");
   title(s, "תרחיש: חברת ביטוח עם ₪2 מיליארד פרמיות ברוטו");
-  s.addChart(pres.charts.BAR, [{ name: "חיסכון שנתי (אלפי ₪)", labels: ["חשמל", "טכנולוגיה", "כוח אדם"], values: [390, 1474, 1940] }], {
+  s.addChart(pres.charts.BAR, [{ name: "חיסכון שנתי (אלפי ₪)", labels: ["חשמל", "מערכות IT", "כוח אדם"], values: [435, 1474, 2180] }], {
     x: M, y: 1.45, w: 7.4, h: 5.0, barDir: "bar", chartColors: [H.accent1],
     showTitle: true, title: "חיסכון שנתי לפי רכיב (אלפי ₪)", titleFontSize: 14, titleColor: H.lt2, titleFontFace: "+mn-lt",
     showValue: true, dataLabelPosition: "outEnd", dataLabelFontSize: 14, dataLabelColor: "FFFFFF", dataLabelFontFace: "+mn-lt", dataLabelFormatCode: "#,##0",
     catAxisLabelColor: "FFFFFF", catAxisLabelFontSize: 14, catAxisLabelFontFace: "+mn-lt", catAxisLineShow: false,
     valAxisHidden: true, valGridLine: { style: "none" }, catGridLine: { style: "none" }, showLegend: false, barGapWidthPct: 55,
   });
-  [["₪3.8M", "חיסכון שנתי בשלושת הרכיבים", AMBER], ["כ-19 נ״ב", "שיפור ביחס ההוצאות: כ-0.19% מהפרמיות", MINT], ["8 משרות", "מוסבות לעבודה בעלת ערך — אפס פיטורים", TXT]].forEach(([b, l, c], i) => {
+  [["₪4.1M", "חיסכון שנתי בשלושת הנושאים", AMBER], ["כ-20 נ״ב", "שיפור ביחס ההוצאות: כ-0.2% מהפרמיות", MINT], ["9 משרות", "מוסבות לעבודה בעלת ערך — אפס פיטורים", TXT]].forEach(([b, l, c], i) => {
     const y = 1.55 + i * 1.65;
     box(s, 8.4, y, 4.33, 1.45, CARD, "stat card " + (i + 1));
     T(s, b, { x: 8.6, y: y + 0.1, w: 3.93, h: 0.75, fontSize: 34, bold: true, color: c });
     T(s, l, { x: 8.6, y: y + 0.85, w: 3.93, h: 0.45, fontSize: 14, color: MUTED });
   });
   T(s, "* חברה מדומה ונתונים להמחשה בלבד — יאומתו בסריקה חינם על הנתונים האמיתיים", { x: M, y: 6.5, w: CW, h: 0.35, fontSize: 11, italic: true, color: MUTED });
-  s.addNotes("3.8 מיליון ₪ (כוח אדם 1.94, טכנולוגיה 1.47, חשמל 0.39) חלקי 2 מיליארד ₪ פרמיות = כ-0.19%, כלומר כ-19 נקודות בסיס ביחס ההוצאות. בכוח אדם הערך הוא זמן עבודה שמוסב, לא פיטורים. זה סדר גודל של שיפור שאקטואר מכיר ומעריך.");
+  s.addNotes("4.1 מיליון ₪ (כוח אדם 2.18 כולל דוחות התביעות, מערכות IT 1.47, חשמל 0.435) חלקי 2 מיליארד ₪ פרמיות = כ-0.2%, כלומר כ-20 נקודות בסיס ביחס ההוצאות. בכוח אדם הערך הוא זמן עבודה שמוסב, לא פיטורים. זה סדר גודל של שיפור שאקטואר מכיר ומעריך.");
+
+  // ===== W. Why it helps =====
+  s = add("ערך");
+  title(s, "למה זה עוזר — ולמי");
+  const why2 = [
+    { ic: fa.FaServer, h: "מנהל ה-IT", t: "מפה אחת של כל המערכות, הטבלאות והדוחות — ומי אחראי על כל אחד" },
+    { ic: fa.FaCoins, h: "סמנכ״ל הכספים", t: "איפה הכסף: כ-20 נקודות בסיס ביחס ההוצאות, עם שורות מקור" },
+    { ic: fa.FaBalanceScale, h: "האקטואר הממונה", t: "הגדרה אחת לכל מונח — דוחות ועתודות על אותם נתונים" },
+    { ic: fa.FaSitemap, h: "מנהלי המחלקות", t: "תמונה מלאה של התהליך שלהם, ואחריות ברורה לכל נכס" },
+  ];
+  const ww = (CW - 3 * 0.3) / 4;
+  for (let i = 0; i < 4; i++) {
+    const c = why2[i], x = W - M - ww - i * (ww + 0.3), y = 1.5;
+    box(s, x, y, ww, 3.5, CARD, "stakeholder " + (i + 1));
+    await circleIcon(s, c.ic, x + ww / 2 - 0.5, y + 0.3, 1.0, CHIP, H.accent1, c.h);
+    T(s, c.h, { x: x + 0.15, y: y + 1.45, w: ww - 0.3, h: 0.5, fontSize: 18, bold: true, color: TXT, align: "center" });
+    T(s, c.t, { x: x + 0.2, y: y + 2.0, w: ww - 0.4, h: 1.35, fontSize: 14, color: MUTED, align: "center", valign: "top" });
+  }
+  box(s, M, 5.3, CW, 1.4, "2A2416", "ibm value band");
+  await circleIcon(s, fa.FaHandshake, W - M - 1.0, 5.57, 0.85, BG, H.accent2, "IBM");
+  T(s, [{ text: "ומה IBM מרוויחה", options: { bold: true, color: AMBER, breakLine: true, rtlMode: true, align: "right" } }, { text: "הכלים של IBM — Bob ו-watsonx — נכנסים לחברות ביטוח דרך בעיה שכל מנהל מערכות מכיר, והאנציקלופדיה נשארת אצל הלקוח כנכס קבוע", options: { color: TXT, rtlMode: true, align: "right" } }],
+    { x: M + 0.3, y: 5.37, w: CW - 1.6, h: 1.26, fontSize: 16, valign: "middle", margin: 0 });
+  s.addNotes("השקף שעונה למה זה עוזר. לכל בעל עניין — תועלת אחרת. ול-IBM: שער כניסה לחברות ביטוח, ומוצר שנשאר — האנציקלופדיה מתעדכנת כל הזמן.");
 
   // ===== 12. IBM architecture =====
   pres.addSection({ title: "ביצוע" });
   s = add("ביצוע");
-  title(s, "בנוי על טכנולוגיות IBM: קטלוג, אורקסטרציה ופיתוח");
+  title(s, "על בסיס IBM: הבוט בונה, watsonx מפעיל");
   const cols = [
-    { h: "מקורות", sub: "קריאה בלבד", items: ["שעות עבודה ומשימות", "מוני חשמל ושרתים", "מערכות ליבה וספקי מידע", "הנהלת חשבונות, ענן ורישיונות"], fill: CARD, hc: TXT },
-    { h: "קטלוג סמנטי", sub: "IBM Bob + watsonx.data", items: ["מיפוי קוד, תהליכים וטבלאות", "אינפוט, אאוטפוט ושושלת", "קישור לתהליך העסקי", "מילון מונחים ביטוחי"], fill: "17362A", hc: MINT },
-    { h: "אורקסטרציה", sub: "watsonx Orchestrate", items: ["סוכן כוח אדם", "סוכן חשמל", "סוכן טכנולוגיה", "סוכן ״מבחן השפעה״"], fill: "17362A", hc: MINT },
+    { h: "מקורות", sub: "קריאה בלבד", items: ["קוד, תהליכים וטבלאות", "שעות עבודה ומשימות", "מוני חשמל ושרתים", "מערכות ליבה ותביעות"], fill: CARD, hc: TXT },
+    { h: "אנציקלופדיה", sub: "IBM Bob + watsonx.data", items: ["מיפוי קוד, תהליכים וטבלאות", "קישור למחלקה ולגורם אחראי", "מילון מונחים ושושלת", "זיהוי דוחות כפולים"], fill: "17362A", hc: MINT },
+    { h: "אורקסטרציה", sub: "watsonx Orchestrate", items: ["סוכן כוח אדם", "סוכן חשמל", "סוכן מערכות IT", "סוכן תהליך, למשל תביעות"], fill: "17362A", hc: MINT },
     { h: "בקרה ופעולה", sub: "watsonx.governance", items: ["אישור האקטואר הממונה", "תיעוד כל החלטה", "משימה והתראה לצוות"], fill: CARD, hc: TXT },
   ];
   for (let i = 0; i < 4; i++) {
@@ -465,8 +609,8 @@ async function icon(Comp, color, size = 256) {
   }
   box(s, M, 5.95, CW, 0.8, "2A2416", "bob band");
   s.addImage({ data: await icon(fa.FaCode, H.accent2), x: W - M - 0.7, y: 6.1, w: 0.5, h: 0.5, altText: "קוד", objectName: "bob icon" });
-  T(s, "IBM Bob קורא את קוד ה-IT ובונה את הקטלוג — וגם את המחברים, הכללים והסוכנים", { x: M + 0.3, y: 5.98, w: CW - 1.3, h: 0.75, fontSize: 17, bold: true, color: AMBER, valign: "middle" });
-  s.addNotes("הקטלוג מספק שושלת נתונים — חשוב לביקורת של IFRS 17. Orchestrate מנהל סוכן לכל רכיב — כוח אדם, חשמל וטכנולוגיה —, ו-governance מתעד כל החלטה. IBM Bob הוא כלי הפיתוח שבו בונים את המחברים ואת חבילת הכללים לביטוח.");
+  T(s, "IBM Bob קורא את קוד ה-IT, מתעד כל תהליך וכותב את ערכי האנציקלופדיה", { x: M + 0.3, y: 5.98, w: CW - 1.3, h: 0.75, fontSize: 17, bold: true, color: AMBER, valign: "middle" });
+  s.addNotes("הקטלוג מספק שושלת נתונים — חשוב לביקורת של IFRS 17. Orchestrate מנהל סוכן לכל רכיב — כוח אדם, חשמל ומערכות IT —, ו-governance מתעד כל החלטה. IBM Bob הוא כלי הפיתוח שבו בונים את המחברים ואת חבילת הכללים לביטוח.");
 
   // ===== 13. Business model =====
   s = add("ביצוע");
@@ -474,7 +618,7 @@ async function icon(Comp, color, size = 256) {
   const plans = [
     { h: "סריקה חינם", p: "₪0", u: "פעם אחת, בלי כרטיס אשראי", items: ["עד 6 מקורות נתונים", "דוח PDF עם 10 הממצאים הגדולים", "הנתונים נמחקים אחרי 14 יום"], fill: CARD, pc: TXT },
     { h: "Growth", p: "₪2,900", u: "לחודש · עד 150 עובדים", items: ["כל המקורות, סריקה יומית", "הסוכן בעברית ושרת MCP", "התראות לפני כל חידוש"], fill: CARD, pc: TXT },
-    { h: "Insurance", p: "בהתאמה", u: "לחברות ביטוח וסוכנויות גדולות", items: ["קטלוג תוצרי ה-IT ושכבה סמנטית", "פריסה ב-IBM Cloud או אצל הלקוח", "אישורי אקטואר ותיעוד לביקורת"], fill: "17362A", pc: MINT },
+    { h: "Insurance", p: "בהתאמה", u: "לחברות ביטוח וסוכנויות גדולות", items: ["אנציקלופדיה ארגונית ושכבה סמנטית", "פריסה ב-IBM Cloud או אצל הלקוח", "אישורי אקטואר ותיעוד לביקורת"], fill: "17362A", pc: MINT },
   ];
   const check = await icon(fa.FaCheck, H.accent1);
   plans.forEach((p, i) => {
@@ -496,7 +640,7 @@ async function icon(Comp, color, size = 256) {
   s = add("ביצוע");
   title(s, "מפת דרכים ל-12 חודשים");
   const rm = [
-    { q: "רבעון 1", h: "קטלוג ושכבה סמנטית", t: "מיפוי תוצרי ה-IT עם IBM Bob, ואז כללי טכנולוגיה וחשמל" },
+    { q: "רבעון 1", h: "אנציקלופדיה ארגונית", t: "מיפוי תוצרי ה-IT עם IBM Bob, ואז כללי מערכות IT וחשמל" },
     { q: "רבעון 2", h: "פיילוט", t: "חברת ביטוח אחת, מדידת חיסכון מאומת מול יחס ההוצאות" },
     { q: "רבעון 3", h: "רכיב כוח אדם", t: "ניתוח עבודה כפולה בחיתום ובדוחות, יחד עם משאבי אנוש" },
     { q: "רבעון 4", h: "השקה", t: "3 חברות ביטוח משלמות, הפצה דרך שותפי IBM" },
@@ -510,7 +654,7 @@ async function icon(Comp, color, size = 256) {
     T(s, r.h, { x: x + 0.2, y: 3.7, w: sw - 0.4, h: 0.85, fontSize: 19, bold: true, color: TXT, align: "center", valign: "middle" });
     T(s, r.t, { x: x + 0.2, y: 4.6, w: sw - 0.4, h: 1.6, fontSize: 15, color: MUTED, align: "center", valign: "top" });
   }
-  s.addNotes("מתחילים בטכנולוגיה ובחשמל — שם הנתונים זמינים והחיסכון מהיר. רכיב כוח האדם, הרגיש יותר, אחרי הפיילוט ובשיתוף משאבי אנוש.");
+  s.addNotes("מתחילים במערכות IT ובחשמל — שם הנתונים זמינים והחיסכון מהיר. רכיב כוח האדם, הרגיש יותר, אחרי הפיילוט ובשיתוף משאבי אנוש.");
 
   // ===== 15. Team =====
   s = add("ביצוע");
