@@ -105,7 +105,7 @@ async function icon(Comp, color, size = 256) {
   let s = add("פתיחה", "HERO");
   T(s, "IBM CHALLENGE 2026  ·  INSURANCE", { x: M, y: 1.35, w: 8.0, h: 0.5, fontSize: 15, bold: true, color: MINT, charSpacing: 3 });
   s.addText("איפה הכסף? לביטוח", Object.assign({ placeholder: "title" }, RTL));
-  s.addText("מורידים את יחס ההוצאות — בלי לגעת ביחס התביעות. מזהים כפילויות בכוח אדם, בחשמל ובטכנולוגיה — בחיתום, בתמחור ובדוחות — ומצביעים על כל שקל עד לשורת המקור.", Object.assign({ placeholder: "body" }, RTL));
+  s.addText("עוזר AI שממפה את ה-IT ובונה שכבה סמנטית ארגונית אחת — ורק אז מוצא כפילויות בכוח אדם, בחשמל ובטכנולוגיה. מורידים את יחס ההוצאות בלי לגעת ביחס התביעות.", Object.assign({ placeholder: "body" }, RTL));
   L(s, "eifo-money.fit", { x: M, y: 5.6, w: 4, h: 0.4, fontSize: 14, color: MUTED, align: "right" });
   s.addShape(pres.shapes.OVAL, { x: 9.5, y: 1.8, w: 3.2, h: 3.2, fill: { color: CARD }, line: { color: MINT, width: 2 }, objectName: "hero ring" });
   s.addImage({ data: await icon(fa.FaSearchDollar, H.accent1), x: 10.3, y: 2.6, w: 1.6, h: 1.6, altText: "זכוכית מגדלת על סימן כסף", objectName: "hero icon" });
@@ -140,9 +140,97 @@ async function icon(Comp, color, size = 256) {
   });
   s.addNotes("מדברים בשפת האקטואר: יחס משולב. כל נקודת בסיס (0.01%) ביחס ההוצאות של חברה עם 2 מיליארד ₪ פרמיות שווה 200 אלף ₪ — בדיוק כמו נקודת בסיס ביחס התביעות. אבל את יחס התביעות מנתחים לעומק, ואת הוצאות התפעול — אנשים, חשמל וטכנולוגיה — לא. היחסים בגרף להמחשה.");
 
+  // ===== 2a. Catalog built by Bob =====
+  pres.addSection({ title: "הבסיס: קטלוג" });
+  s = add("הבסיס: קטלוג");
+  title(s, "שלב 1: IBM Bob בונה קטלוג של כל תוצרי ה-IT");
+  T(s, "לפני שמחפשים כסף — ממפים. לכל תוצר: מה נכנס, מה יוצא, למה הוא מקושר ומי משתמש בו", { x: M, y: 1.18, w: CW, h: 0.42, fontSize: 16, color: MUTED });
+  const reads = [
+    { ic: fa.FaCode, h: "קוד ושאילתות", tools: "GitHub · GitLab · SQL" },
+    { ic: fa.FaCogs, h: "תהליכים מתוזמנים", tools: "Airflow · Control-M · SSIS" },
+    { ic: fa.FaDatabase, h: "סכמות וטבלאות", tools: "Oracle · DB2 · Snowflake" },
+    { ic: fa.FaChartBar, h: "דוחות ולוחות מחוונים", tools: "Power BI · Qlik · Tableau" },
+  ];
+  T(s, "מה Bob קורא", { x: 8.2, y: 1.75, w: 4.53, h: 0.45, fontSize: 18, bold: true, color: MINT });
+  for (let i = 0; i < 4; i++) {
+    const r = reads[i], y = 2.3 + i * 1.08;
+    box(s, 8.2, y, 4.53, 0.92, CARD, "bob reads " + (i + 1));
+    await circleIcon(s, r.ic, W - M - 0.8, y + 0.14, 0.64, CHIP, H.accent1, r.h);
+    T(s, r.h, { x: 8.4, y: y + 0.08, w: 3.4, h: 0.42, fontSize: 16, bold: true, color: TXT, margin: 0, valign: "middle" });
+    L(s, r.tools, { x: 8.4, y: y + 0.5, w: 3.4, h: 0.32, fontSize: 12, color: MUTED, align: "right", margin: 0 });
+  }
+  s.addImage({ data: await icon(fa.FaArrowLeft, H.accent2), x: 7.55, y: 3.95, w: 0.45, h: 0.45, altText: "חץ", objectName: "catalog arrow" });
+  // catalog entry mock
+  const cx = M, cy = 1.75, cwd = 6.75;
+  box(s, cx, cy, cwd, 4.95, CARD, "catalog entry");
+  s.addText("רשומת קטלוג", { isTextBox: true, x: cx + cwd - 1.85, y: cy + 0.25, w: 1.6, h: 0.38, shape: pres.shapes.ROUNDED_RECTANGLE, rectRadius: 0.19, fill: { color: CHIP }, fontSize: 12, bold: true, color: MINT, align: "center", valign: "middle", margin: 0, rtlMode: true, objectName: "catalog chip" });
+  T(s, "חישוב תעריף רכב — לילי", { x: cx + 0.3, y: cy + 0.75, w: cwd - 0.6, h: 0.55, fontSize: 22, bold: true, color: TXT, margin: 0 });
+  const fields = [
+    ["סוג", "תהליך מתוזמן", false],
+    ["אינפוט", "policy_master · claims_hist · credit_ext", true],
+    ["אאוטפוט", "rate_table_auto", true],
+    ["משרת", "תמחור (ראשי), חיתום", false],
+    ["בעלים", "צוות תמחור רכב", false],
+    ["עלות", "₪95K בשנה — מחשוב וחשמל", false],
+  ];
+  fields.forEach(([k, v, ltr], i) => {
+    const y = cy + 1.45 + i * 0.47;
+    T(s, k, { x: cx + cwd - 1.5, y, w: 1.2, h: 0.4, fontSize: 14, bold: true, color: AMBER, margin: 0, valign: "middle" });
+    if (ltr) L(s, v, { x: cx + 0.3, y, w: cwd - 1.9, h: 0.4, fontSize: 13, fontFace: "Courier New", color: TXT, align: "right", margin: 0, valign: "middle" });
+    else T(s, v, { x: cx + 0.3, y, w: cwd - 1.9, h: 0.4, fontSize: 14, color: TXT, margin: 0, valign: "middle" });
+  });
+  box(s, cx + 0.25, cy + 4.3, cwd - 0.5, 0.5, "3A3020", "catalog flag", 0.1);
+  T(s, "כפילות אפשרית: אותו אאוטפוט נבנה גם בתהליך SAS נפרד", { x: cx + 0.4, y: cy + 4.3, w: cwd - 0.8, h: 0.5, fontSize: 14, bold: true, color: AMBER, valign: "middle", margin: 0 });
+  s.addNotes("זה הבסיס של המוצר. IBM Bob נכנס ל-IT — קוד, תהליכים מתוזמנים, סכמות ודוחות — ובונה קטלוג: לכל תוצר מה נכנס, מה יוצא, למה הוא מקושר, מי משתמש בו וכמה הוא עולה. בלי הקטלוג אי אפשר לדעת ששני תהליכים עושים אותו דבר.");
+
+  // ===== 2b. Semantic layer =====
+  s = add("הבסיס: קטלוג");
+  title(s, "שכבה סמנטית אחת: איזו טבלה משרתת איזה תהליך");
+  const colT = { x: 10.23, w: 2.5 }, colP = { x: 5.55, w: 3.1 }, colB = { x: M, w: 2.1 };
+  [["טבלאות", colT], ["תהליכי IT", colP], ["תהליכים עסקיים", colB]].forEach(([h, c]) =>
+    T(s, h, { x: c.x, y: 1.2, w: c.w, h: 0.4, fontSize: 16, bold: true, color: MINT, align: "center" }));
+  const ys = [1.75, 2.55, 3.35, 4.15, 4.95], ch = 0.52;
+  const tabs = ["policy_master", "claims_hist", "model_points", "policy_snapshot_q3", "credit_ext"];
+  const procs2 = [["תעריף רכב — Python", false], ["תעריף רכב — SAS", true], ["תחזית תזרים IFRS 17", false], ["תחזית תזרים כושר פירעון", true], ["שליפת דוח אשראי", false]];
+  const biz = [["תמחור", 2.15], ["דוחות", 3.75], ["חיתום", 4.95]];
+  const line = (x1, y1, x2, y2, col, n) => {
+    const o = { x: Math.min(x1, x2), y: Math.min(y1, y2), w: Math.abs(x2 - x1), h: Math.abs(y2 - y1), line: { color: col, width: 1.5 }, objectName: "link " + n };
+    if ((x1 > x2) !== (y1 > y2) && o.h > 0) o.flipH = true;
+    s.addShape(pres.shapes.LINE, o);
+  };
+  const tE = [[0, 0], [0, 1], [1, 0], [1, 1], [2, 2], [2, 3], [3, 2], [4, 4]];
+  tE.forEach(([t, p], n) => line(colT.x, ys[t] + ch / 2, colP.x + colP.w, ys[p] + ch / 2, procs2[p][1] ? AMBER : NEUT, "t" + n));
+  const pE = [[0, 0], [1, 0], [2, 1], [3, 1], [4, 2]];
+  pE.forEach(([p, b], n) => line(colP.x, ys[p] + ch / 2, colB.x + colB.w, biz[b][1] + ch / 2, procs2[p][1] ? AMBER : NEUT, "p" + n));
+  tabs.forEach((t, i) => {
+    box(s, colT.x, ys[i], colT.w, ch, CARD, "table " + (i + 1), 0.08);
+    L(s, t, { x: colT.x + 0.1, y: ys[i], w: colT.w - 0.2, h: ch, fontSize: 12, fontFace: "Courier New", color: TXT, align: "center", valign: "middle", margin: 0 });
+  });
+  s.addText("4 עותקים", { isTextBox: true, x: colT.x - 0.25, y: ys[3] - 0.18, w: 0.95, h: 0.32, shape: pres.shapes.ROUNDED_RECTANGLE, rectRadius: 0.16, fill: { color: AMBER }, fontSize: 11, bold: true, color: "0B0F14", align: "center", valign: "middle", margin: 0, rtlMode: true, objectName: "copies badge" });
+  procs2.forEach(([p, dup], i) => {
+    s.addShape(pres.shapes.ROUNDED_RECTANGLE, { x: colP.x, y: ys[i], w: colP.w, h: ch, rectRadius: 0.08, fill: { color: dup ? "3A3020" : CARD }, line: { color: dup ? AMBER : CARD, width: 1.5 }, objectName: "process " + (i + 1) });
+    T(s, p, { x: colP.x + 0.1, y: ys[i], w: colP.w - 0.2, h: ch, fontSize: 14, bold: dup, color: dup ? AMBER : TXT, align: "center", valign: "middle", margin: 0 });
+  });
+  biz.forEach(([b, y], i) => {
+    box(s, colB.x, y, colB.w, ch, "17362A", "business " + (i + 1), 0.08);
+    T(s, b, { x: colB.x, y, w: colB.w, h: ch, fontSize: 16, bold: true, color: MINT, align: "center", valign: "middle", margin: 0 });
+  });
+  const ins = [
+    { big: "כל טבלה", t: "יודעים איזה תהליך היא מזינה ומי הבעלים" },
+    { big: "כל תהליך", t: "יודעים מה האינפוט, מה האאוטפוט ולמי הוא משרת" },
+    { big: "כל כפילות", t: "אותו אאוטפוט מאותם אינפוטים — מסומן אוטומטית" },
+  ];
+  ins.forEach((c, i) => {
+    const x = col3(i), y = 5.75;
+    box(s, x, y, 3.8, 0.98, CARD, "insight " + (i + 1));
+    T(s, c.big, { x: x + 0.2, y: y + 0.06, w: 3.4, h: 0.42, fontSize: 16, bold: true, color: i === 2 ? AMBER : TXT, margin: 0, valign: "middle" });
+    T(s, c.t, { x: x + 0.2, y: y + 0.48, w: 3.4, h: 0.42, fontSize: 13, color: MUTED, margin: 0, valign: "middle" });
+  });
+  s.addNotes("זו השכבה הסמנטית: טבלאות, תהליכי IT ותהליכים עסקיים במפה אחת. עכשיו כולם רואים את אותה תמונה. הכפילויות קופצות לבד: שני תהליכים שבונים את אותו תעריף מאותן טבלאות, שני מנועים שמחשבים את אותה תחזית תזרים, וארבעה עותקים של אותו צילום רבעוני. רק מכאן ממשיכים לשאלה איפה הכסף.");
+
   // ===== 3. Matrix: 3 components x 3 processes =====
   s = add("הבעיה");
-  title(s, "שלושה רכיבים × שלושה תהליכים: איפה משלמים פעמיים");
+  title(s, "מה הקטלוג מגלה: שלושה רכיבים × שלושה תהליכים");
   const pil = [
     { ic: fa.FaUsers, h: "כוח אדם", amt: "₪1.94M", cells: ["אותה הצעה נבדקת פעמיים — בסוכנות ובחברה", "טבלאות תעריף מוקלדות ידנית לשלוש מערכות", "שני צוותים מתאימים את אותם נתונים לרבעון"] },
     { ic: fa.FaBolt, h: "חשמל", amt: "₪390K", cells: ["שרתי מערכת הליבה הישנה עדיין דולקים", "ריצות לילה על נתונים שלא השתנו", "חוות החישוב דולקת כל השנה, עובדת 4 שבועות"] },
@@ -226,6 +314,7 @@ async function icon(Comp, color, size = 256) {
   title(s, "החיבורים: מאיפה כל מספר מגיע");
   const ihdr = ["מקור", "כלים לדוגמה", "מה אנחנו קוראים", "כללים לדוגמה"];
   const irows = [
+    ["קוד ותהליכי IT", "GitHub · Airflow · dbt · SQL", "קוד, ג׳ובים, סכמות וטבלאות — לבניית הקטלוג", "DUP_PIPELINE_OUTPUT\nDUP_TABLE_COPY"],
     ["כוח אדם", "HiBob · Jira · ServiceNow", "שעות לפי משימה ותהליך, תפקידים", "DUP_UW_REVIEW\nDUP_RECONCILIATION"],
     ["חשמל", "BMS · Smart meters · IPMI", "צריכת קוט״ש וניצול שרתים לפי שעה", "IDLE_GRID_FARM\nZOMBIE_LEGACY_SERVERS"],
     ["הנהלת חשבונות ובנק", "Priority · SAP · Leumi · Cal", "חשבוניות, העברות וחיובי כרטיס", "DUP_VENDOR_INVOICE\nDUP_CROSS_CURRENCY"],
@@ -240,11 +329,11 @@ async function icon(Comp, color, size = 256) {
     itbl.push([
       { text: r[3], options: { fill, color: H.lt2, fontFace: "Courier New", fontSize: 11, align: "center", valign: "middle" } },
       { text: r[2], options: { fill, color: "FFFFFF", fontSize: 14, align: "right", rtlMode: true, valign: "middle" } },
-      { text: r[1], options: { fill, color: ri === 4 ? H.accent3 : H.accent1, bold: true, fontSize: 13, align: "center", valign: "middle" } },
+      { text: r[1], options: { fill, color: ri === 5 ? H.accent3 : H.accent1, bold: true, fontSize: 13, align: "center", valign: "middle" } },
       { text: r[0], options: { fill, color: "FFFFFF", bold: true, fontSize: 14, align: "right", rtlMode: true, valign: "middle" } },
     ]);
   });
-  s.addTable(itbl, { x: M, y: 1.45, w: CW, colW: [2.75, 3.4, 3.68, 2.3], rowH: [0.45, 0.62, 0.62, 0.62, 0.5, 0.5, 0.62], border: { type: "solid", pt: 1, color: H.accent4 }, objectName: "integrations table" });
+  s.addTable(itbl, { x: M, y: 1.45, w: CW, colW: [2.75, 3.4, 3.68, 2.3], rowH: [0.42, 0.58, 0.56, 0.56, 0.56, 0.48, 0.48, 0.56], border: { type: "solid", pt: 1, color: H.accent4 }, objectName: "integrations table" });
   box(s, M, 6.05, CW, 0.7, CARD, "read only band");
   s.addImage({ data: await icon(fa.FaLock, H.accent1), x: W - M - 0.6, y: 6.2, w: 0.4, h: 0.4, altText: "מנעול", objectName: "read only icon" });
   T(s, "כל החיבורים בקריאה בלבד. כתיבה רק למשימות ב-Jira או ServiceNow, באישור אדם", { x: M + 0.3, y: 6.08, w: CW - 1.2, h: 0.64, fontSize: 16, bold: true, color: TXT, valign: "middle" });
@@ -286,8 +375,8 @@ async function icon(Comp, color, size = 256) {
   title(s, "איך זה עובד: מהשורה במקור ועד הפעולה");
   const steps = [
     { ic: fa.FaPlug, h: "מתחברים בקריאה בלבד", t: "שעות עבודה, מוני חשמל, הנהלת חשבונות, ענן ורישיונות" },
-    { ic: fa.FaTasks, h: "כללים דטרמיניסטיים", t: "33 כללים כלליים ועוד חבילת כללים לביטוח, על כל שורה" },
-    { ic: fa.FaSearchDollar, h: "ממצא עם שורות מקור", t: "סכום, רמת ביטחון ושורות המקור — שקוף כמו עבודה אקטוארית" },
+    { ic: fa.FaProjectDiagram, h: "קטלוג ושכבה סמנטית", t: "Bob ממפה כל תוצר: אינפוט, אאוטפוט, קישורים ומשתמשים" },
+    { ic: fa.FaSearchDollar, h: "כללים מוצאים כפילויות", t: "33 כללים ועוד חבילת ביטוח, עם סכום ושורות מקור" },
     { ic: fa.FaCheckCircle, h: "פעולה ומעקב", t: "משימה לצוות האחראי, התראה, ומעקב אחרי חיסכון מאומת" },
   ];
   const sw = 2.75, sg = 0.377;
@@ -325,7 +414,7 @@ async function icon(Comp, color, size = 256) {
   const why = [
     { ic: fa.FaDatabase, h: "לא ממציא מספרים", t: "כל משפט מצביע על ממצא או על שורת מקור" },
     { ic: fa.FaProjectDiagram, h: "מתחבר לכל סוכן", t: "שרת MCP לסוכנים שכבר עובדים בארגון" },
-    { ic: fa.FaComments, h: "בשפה של הארגון", t: "מבין פוליסה, כיסוי, תביעה ונקודת מודל" },
+    { ic: fa.FaComments, h: "נשען על השכבה הסמנטית", t: "יודע איזו טבלה משרתת איזה תהליך" },
   ];
   for (let i = 0; i < 3; i++) {
     const w = why[i], y = 1.6 + i * 1.7;
@@ -361,7 +450,7 @@ async function icon(Comp, color, size = 256) {
   title(s, "בנוי על טכנולוגיות IBM: קטלוג, אורקסטרציה ופיתוח");
   const cols = [
     { h: "מקורות", sub: "קריאה בלבד", items: ["שעות עבודה ומשימות", "מוני חשמל ושרתים", "מערכות ליבה וספקי מידע", "הנהלת חשבונות, ענן ורישיונות"], fill: CARD, hc: TXT },
-    { h: "קטלוג נתונים", sub: "watsonx.data intelligence", items: ["מילון מונחים ביטוחי", "שושלת נתונים לביקורת", "מיסוך מידע רפואי ואישי"], fill: "17362A", hc: MINT },
+    { h: "קטלוג סמנטי", sub: "IBM Bob + watsonx.data", items: ["מיפוי קוד, תהליכים וטבלאות", "אינפוט, אאוטפוט ושושלת", "קישור לתהליך העסקי", "מילון מונחים ביטוחי"], fill: "17362A", hc: MINT },
     { h: "אורקסטרציה", sub: "watsonx Orchestrate", items: ["סוכן כוח אדם", "סוכן חשמל", "סוכן טכנולוגיה", "סוכן ״מבחן השפעה״"], fill: "17362A", hc: MINT },
     { h: "בקרה ופעולה", sub: "watsonx.governance", items: ["אישור האקטואר הממונה", "תיעוד כל החלטה", "משימה והתראה לצוות"], fill: CARD, hc: TXT },
   ];
@@ -376,7 +465,7 @@ async function icon(Comp, color, size = 256) {
   }
   box(s, M, 5.95, CW, 0.8, "2A2416", "bob band");
   s.addImage({ data: await icon(fa.FaCode, H.accent2), x: W - M - 0.7, y: 6.1, w: 0.5, h: 0.5, altText: "קוד", objectName: "bob icon" });
-  T(s, "חבילת הכללים לביטוח, המחברים והסוכנים נבנים עם IBM Bob — כולל סריקת מידע רגיש", { x: M + 0.3, y: 5.98, w: CW - 1.3, h: 0.75, fontSize: 17, bold: true, color: AMBER, valign: "middle" });
+  T(s, "IBM Bob קורא את קוד ה-IT ובונה את הקטלוג — וגם את המחברים, הכללים והסוכנים", { x: M + 0.3, y: 5.98, w: CW - 1.3, h: 0.75, fontSize: 17, bold: true, color: AMBER, valign: "middle" });
   s.addNotes("הקטלוג מספק שושלת נתונים — חשוב לביקורת של IFRS 17. Orchestrate מנהל סוכן לכל רכיב — כוח אדם, חשמל וטכנולוגיה —, ו-governance מתעד כל החלטה. IBM Bob הוא כלי הפיתוח שבו בונים את המחברים ואת חבילת הכללים לביטוח.");
 
   // ===== 13. Business model =====
@@ -385,7 +474,7 @@ async function icon(Comp, color, size = 256) {
   const plans = [
     { h: "סריקה חינם", p: "₪0", u: "פעם אחת, בלי כרטיס אשראי", items: ["עד 6 מקורות נתונים", "דוח PDF עם 10 הממצאים הגדולים", "הנתונים נמחקים אחרי 14 יום"], fill: CARD, pc: TXT },
     { h: "Growth", p: "₪2,900", u: "לחודש · עד 150 עובדים", items: ["כל המקורות, סריקה יומית", "הסוכן בעברית ושרת MCP", "התראות לפני כל חידוש"], fill: CARD, pc: TXT },
-    { h: "Insurance", p: "בהתאמה", u: "לחברות ביטוח וסוכנויות גדולות", items: ["כללים לאנשים, חשמל וטכנולוגיה", "פריסה ב-IBM Cloud או אצל הלקוח", "אישורי אקטואר ותיעוד לביקורת"], fill: "17362A", pc: MINT },
+    { h: "Insurance", p: "בהתאמה", u: "לחברות ביטוח וסוכנויות גדולות", items: ["קטלוג תוצרי ה-IT ושכבה סמנטית", "פריסה ב-IBM Cloud או אצל הלקוח", "אישורי אקטואר ותיעוד לביקורת"], fill: "17362A", pc: MINT },
   ];
   const check = await icon(fa.FaCheck, H.accent1);
   plans.forEach((p, i) => {
@@ -407,7 +496,7 @@ async function icon(Comp, color, size = 256) {
   s = add("ביצוע");
   title(s, "מפת דרכים ל-12 חודשים");
   const rm = [
-    { q: "רבעון 1", h: "טכנולוגיה וחשמל", t: "כללים לרישיונות, ספקי מידע ושרתים, נבנים עם IBM Bob" },
+    { q: "רבעון 1", h: "קטלוג ושכבה סמנטית", t: "מיפוי תוצרי ה-IT עם IBM Bob, ואז כללי טכנולוגיה וחשמל" },
     { q: "רבעון 2", h: "פיילוט", t: "חברת ביטוח אחת, מדידת חיסכון מאומת מול יחס ההוצאות" },
     { q: "רבעון 3", h: "רכיב כוח אדם", t: "ניתוח עבודה כפולה בחיתום ובדוחות, יחד עם משאבי אנוש" },
     { q: "רבעון 4", h: "השקה", t: "3 חברות ביטוח משלמות, הפצה דרך שותפי IBM" },
