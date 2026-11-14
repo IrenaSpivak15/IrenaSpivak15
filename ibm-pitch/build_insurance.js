@@ -103,9 +103,9 @@ async function icon(Comp, color, size = 256) {
   // ===== 1. Title =====
   pres.addSection({ title: "פתיחה" });
   let s = add("פתיחה", "HERO");
-  T(s, "IBM CHALLENGE 2026  ·  INSURANCE", { x: M, y: 1.35, w: 8.0, h: 0.5, fontSize: 15, bold: true, color: MINT, charSpacing: 3 });
+  T(s, "IBM CHALLENGE 2026", { x: M, y: 1.35, w: 8.0, h: 0.5, fontSize: 15, bold: true, color: MINT, charSpacing: 3 });
   s.addText("איפה הכסף? לביטוח", Object.assign({ placeholder: "title" }, RTL));
-  s.addText("בוט שנכנס למחלקת ה-IT, ממפה כוח אדם, חשמל ומערכות, ובונה אנציקלופדיה ארגונית אחת — ומשם מוצא איפה הכסף, בלי לגעת ביחס התביעות.", Object.assign({ placeholder: "body" }, RTL));
+  s.addText("מנוע להתוויית מסלול אופטימלי: ממפה את הארגון לאנציקלופדיה אחת, ומנחה את הצוות בזמן אמת למערכות ולטבלאות הנכונות — כדי לבנות כל תהליך בדרך היעילה ביותר.", Object.assign({ placeholder: "body" }, RTL));
   L(s, "eifo-money.fit", { x: M, y: 5.6, w: 4, h: 0.4, fontSize: 14, color: MUTED, align: "right" });
   s.addShape(pres.shapes.OVAL, { x: 9.5, y: 1.8, w: 3.2, h: 3.2, fill: { color: CARD }, line: { color: MINT, width: 2 }, objectName: "hero ring" });
   s.addImage({ data: await icon(fa.FaSearchDollar, H.accent1), x: 10.3, y: 2.6, w: 1.6, h: 1.6, altText: "זכוכית מגדלת על סימן כסף", objectName: "hero icon" });
@@ -143,14 +143,14 @@ async function icon(Comp, color, size = 256) {
   // ===== J. Journey =====
   pres.addSection({ title: "הרעיון" });
   s = add("הרעיון");
-  title(s, "הרעיון: נכנסים ל-IT, יוצאים עם אנציקלופדיה ארגונית");
-  T(s, "״איפה הכסף?״ מתחיל במיפוי. הכסף הוא מה שמגלים בסוף", { x: M, y: 1.18, w: CW, h: 0.42, fontSize: 16, color: MUTED });
+  title(s, "הרעיון: ממפים פעם אחת, מנווטים כל יום");
+  T(s, "״איפה הכסף?״ הוא מנוע להתוויית מסלול אופטימלי — המיפוי הוא הבסיס, הניווט הוא הערך", { x: M, y: 1.18, w: CW, h: 0.42, fontSize: 16, color: MUTED });
   const jr = [
     { ic: fa.FaDoorOpen, h: "נכנסים ל-IT", t: "קריאה בלבד: קוד, תהליכים, טבלאות, דוחות וחשבוניות" },
     { ic: fa.FaLayerGroup, h: "ממפים 3 נושאים", t: "כוח אדם, חשמל ומערכות IT" },
     { ic: fa.FaSitemap, h: "מקשרים למחלקות", t: "כל נכס למחלקה שמשתמשת בו ולגורם אחראי" },
-    { ic: fa.FaSearchPlus, h: "צוללים לתהליכים", t: "למשל תביעות: כל המערכות, הטבלאות והדוחות" },
-    { ic: fa.FaBook, h: "אנציקלופדיה ארגונית", t: "ומשם רואים כפילויות — ואיפה הכסף" },
+    { ic: fa.FaBook, h: "אנציקלופדיה ארגונית", t: "למשל תביעות: כל המערכות, הטבלאות והדוחות" },
+    { ic: fa.FaRoute, h: "מנווטים בזמן אמת", t: "כל תהליך חדש נבנה במסלול האופטימלי" },
   ];
   const jw = 2.25, jg = (CW - 5 * jw) / 4;
   s.addShape(pres.shapes.LINE, { x: M + jw / 2, y: 2.35, w: CW - jw, h: 0, line: { color: NEUT, width: 3 }, objectName: "journey line" });
@@ -161,7 +161,7 @@ async function icon(Comp, color, size = 256) {
     T(s, j.h, { x, y: 3.05, w: jw, h: 0.75, fontSize: 18, bold: true, color: last ? AMBER : TXT, align: "center", valign: "middle" });
     T(s, j.t, { x: x + 0.05, y: 3.8, w: jw - 0.1, h: 1.0, fontSize: 14, color: MUTED, align: "center", valign: "top" });
   }
-  const pills = [["המוצר", "איפה הכסף?"], ["המנוע", "IBM Bob + watsonx"], ["התוצר", "אנציקלופדיה ארגונית"]];
+  const pills = [["המוצר", "איפה הכסף?"], ["המנוע", "IBM Bob + watsonx"], ["התוצר", "מסלול אופטימלי"]];
   pills.forEach(([k, v], i) => {
     const x = col3(i), y = 5.35;
     box(s, x, y, 3.8, 1.25, i === 2 ? "17362A" : CARD, "pill " + (i + 1));
@@ -169,6 +169,31 @@ async function icon(Comp, color, size = 256) {
     T(s, v, { x: x + 0.25, y: y + 0.52, w: 3.3, h: 0.55, fontSize: 20, bold: true, color: i === 2 ? MINT : TXT, margin: 0, valign: "middle" });
   });
   s.addNotes("זה הסיפור כולו בשקף אחד. באים למחלקת ה-IT, ממפים שלושה נושאים — כוח אדם, חשמל ומערכות IT — מקשרים כל נכס למחלקה ולגורם אחראי, צוללים לתהליכים כמו תביעות, ובסוף יש אנציקלופדיה ארגונית. הכפילויות והכסף הם תוצר של המפה.");
+
+  // ===== S. From digging to navigating =====
+  s = add("הרעיון");
+  title(s, "לא מחטטים בעבר — מנווטים קדימה");
+  const cols2 = [
+    { h: "היום: מחטטים בעבר", fill: CARD, hc: MUTED, ic: fa.FaHistory, items: ["מגלים כפילות אחרי שכבר שילמו עליה", "כל צוות בונה מחדש — כי לא יודע מה כבר קיים", "ביקורת פעם בשנה, בדיעבד"] },
+    { h: "עם ״איפה הכסף?״: מנווטים", fill: "17362A", hc: MINT, ic: fa.FaRoute, items: ["המערכת מנחה את הצוות בזמן אמת", "מנתבת למערכת, לטבלה ולבעלים הנכונים", "כל תהליך חדש נבנה במסלול היעיל ביותר"] },
+  ];
+  const cw2 = 5.6;
+  for (let i = 0; i < 2; i++) {
+    const c = cols2[i], x = i === 0 ? W - M - cw2 : M, y = 1.5;
+    box(s, x, y, cw2, 3.85, c.fill, "compare " + (i + 1));
+    await circleIcon(s, c.ic, x + cw2 - 1.05, y + 0.3, 0.75, BG, i ? H.accent1 : H.lt2, c.h);
+    T(s, c.h, { x: x + 0.3, y: y + 0.35, w: cw2 - 1.5, h: 0.65, fontSize: 21, bold: true, color: c.hc, valign: "middle", margin: 0 });
+    c.items.forEach((t, k) => {
+      const yy = y + 1.35 + k * 0.78;
+      s.addShape(pres.shapes.OVAL, { x: x + cw2 - 0.55, y: yy + 0.17, w: 0.18, h: 0.18, fill: { color: i ? MINT : NEUT }, line: { color: i ? MINT : NEUT }, objectName: `compare dot ${i + 1}.${k + 1}` });
+      T(s, t, { x: x + 0.3, y: yy, w: cw2 - 1.0, h: 0.55, fontSize: 16, color: i ? TXT : MUTED, valign: "middle", margin: 0 });
+    });
+  }
+  s.addImage({ data: await icon(fa.FaArrowLeft, H.accent2), x: W / 2 - 0.25, y: 3.2, w: 0.5, h: 0.5, altText: "חץ", objectName: "compare arrow" });
+  box(s, M, 5.6, CW, 1.1, "2A2416", "nav band");
+  T(s, [{ text: "מנוע להתוויית מסלול אופטימלי", options: { bold: true, color: AMBER, breakLine: true, rtlMode: true, align: "right" } }, { text: "הסריקה הראשונה מראה איפה הכסף היום. מכאן המערכת מנווטת — כדי שהכסף לא ילך לאיבוד מחר", options: { color: TXT, rtlMode: true, align: "right" } }],
+    { x: M + 0.3, y: 5.65, w: CW - 0.6, h: 1.0, fontSize: 17, valign: "middle", margin: 0 });
+  s.addNotes("זה שינוי התפיסה: במקום לחטט בעבר ולמצוא כפילויות אחרי שכבר שילמו עליהן, המערכת מנחה את הצוות בזמן אמת — כמו אפליקציית ניווט — ומכוונת אותו למערכות ולטבלאות הנכונות. הממצאים מהסריקה הראשונה הם ההוכחה לערך; הניווט מונע את הבזבוז הבא.");
 
   // ===== 2a. Catalog built by Bob =====
   pres.addSection({ title: "הבסיס: אנציקלופדיה" });
@@ -349,6 +374,33 @@ async function icon(Comp, color, size = 256) {
     { x: M + 0.3, y: 5.42, w: CW - 1.6, h: 1.26, fontSize: 15, valign: "middle", margin: 0 });
   s.addNotes("זו הדוגמה החזקה ביותר לאקטוארים: שלושה דוחות עונים על אותה שאלה — כמה תביעות פתוחות — ומקבלים שלוש תשובות, כי כל אחד מחשב מנתונים אחרים ובהגדרה אחרת. האנציקלופדיה יוצרת ערך אחד עם הגדרה ובעלים. זה חוסך זמן התאמות, ובעיקר נותן לעתודות ולדוחות בסיס נתונים אחד. המספרים להמחשה.");
 
+  // ===== R. Real-time route =====
+  s = add("צלילה: תביעות");
+  title(s, "ניווט בזמן אמת: שני מסלולים לאותו דוח חדש");
+  T(s, "אנליסטית בתביעות צריכה דוח ״תביעות פתוחות לפי סוכן״. המערכת מציגה מסלולים — כמו אפליקציית ניווט", { x: M, y: 1.18, w: CW, h: 0.42, fontSize: 16, color: MUTED });
+  const routes = [
+    { name: "המסלול הרגיל", m: ["6 שבועות", "₪120K בשנה", "כפילות רביעית"], col: RISK, fill: CARD, stops: ["שליפה חדשה ממערכת הליבה", "טבלה חדשה במחסן הנתונים", "הגדרה חדשה ל״תביעה פתוחה״", "דוח רביעי באותו נושא"] },
+    { name: "המסלול האופטימלי", m: ["שבוע אחד", "₪8K בשנה", "אפס כפילויות"], col: MINT, fill: "17362A", stops: ["טבלת המקור המאושרת", "ההגדרה מהאנציקלופדיה", "הרחבה של דוח קיים", "אישור האקטואר הממונה"] },
+  ];
+  for (let r = 0; r < 2; r++) {
+    const R = routes[r], y = 1.75 + r * 2.15, h = 1.95;
+    box(s, M, y, CW, h, R.fill, "route " + (r + 1));
+    const nx = W - M - 2.6;
+    T(s, R.name, { x: nx, y: y + 0.2, w: 2.4, h: 0.5, fontSize: 19, bold: true, color: R.col, margin: 0, valign: "middle" });
+    R.m.forEach((t, k) => T(s, t, { x: nx, y: y + 0.75 + k * 0.36, w: 2.4, h: 0.34, fontSize: 14, bold: k === 2, color: k === 2 ? R.col : TXT, margin: 0, valign: "middle" }));
+    const x0 = nx - 0.6, x1 = M + 1.15, ly = y + 0.7;
+    s.addShape(pres.shapes.LINE, { x: x1, y: ly, w: x0 - x1, h: 0, line: { color: R.col, width: 3, dashType: r === 0 ? "dash" : "solid" }, objectName: "route line " + (r + 1) });
+    for (let k = 0; k < 4; k++) {
+      const cx = x0 - k * ((x0 - x1) / 3);
+      s.addShape(pres.shapes.OVAL, { x: cx - 0.17, y: ly - 0.17, w: 0.34, h: 0.34, fill: { color: k === 3 ? R.col : BG }, line: { color: R.col, width: 2.5 }, objectName: `stop ${r + 1}.${k + 1}` });
+      T(s, R.stops[k], { x: cx - 1.0, y: ly + 0.3, w: 2.0, h: 0.8, fontSize: 13, color: TXT, align: "center", valign: "top", margin: 0 });
+    }
+  }
+  box(s, M, 6.1, CW, 0.65, CARD, "where band");
+  s.addImage({ data: await icon(fa.FaCode, H.accent2), x: W - M - 0.6, y: 6.23, w: 0.38, h: 0.38, altText: "קוד", objectName: "where icon" });
+  T(s, "הניווט מופיע איפה שעובדים: בתוך IBM Bob בזמן כתיבת הקוד, ובצ׳אט בעברית", { x: M + 0.3, y: 6.1, w: CW - 1.1, h: 0.65, fontSize: 16, bold: true, color: TXT, valign: "middle", margin: 0 });
+  s.addNotes("דוגמה מעשית: אנליסטית בתביעות צריכה דוח חדש. בלי ניווט היא בונה שליפה, טבלה והגדרה חדשות — ויוצרת את הדוח הרביעי שעונה על אותה שאלה. עם הניווט היא מקבלת את טבלת המקור המאושרת, את ההגדרה מהאנציקלופדיה ודוח קיים להרחבה, והבעלים מאשר. המספרים להמחשה.");
+
   // ===== 3. Matrix: 3 components x 4 processes =====
   pres.addSection({ title: "ממצאים" });
   s = add("ממצאים");
@@ -498,7 +550,7 @@ async function icon(Comp, color, size = 256) {
     { ic: fa.FaPlug, h: "מתחברים בקריאה בלבד", t: "שעות עבודה, מוני חשמל, הנהלת חשבונות, ענן ורישיונות" },
     { ic: fa.FaProjectDiagram, h: "קטלוג ושכבה סמנטית", t: "Bob ממפה כל תוצר: אינפוט, אאוטפוט, קישורים ומשתמשים" },
     { ic: fa.FaSearchDollar, h: "כללים מוצאים כפילויות", t: "33 כללים ועוד חבילת ביטוח, עם סכום ושורות מקור" },
-    { ic: fa.FaCheckCircle, h: "פעולה ומעקב", t: "משימה לצוות האחראי, התראה, ומעקב אחרי חיסכון מאומת" },
+    { ic: fa.FaRoute, h: "ניווט בזמן אמת", t: "כל צוות שבונה תהליך מקבל את המסלול האופטימלי" },
   ];
   const sw = 2.75, sg = 0.377;
   for (let i = 0; i < 4; i++) {
@@ -520,20 +572,20 @@ async function icon(Comp, color, size = 256) {
 
   // ===== 10. Agent demo =====
   s = add("הפתרון");
-  title(s, "שואלים בעברית. התשובה רק מהנתונים");
+  title(s, "שואלים בעברית — ומקבלים מסלול");
   box(s, M, 1.5, 7.6, 5.2, CARD, "chat window");
   box(s, 3.6, 1.8, 4.35, 0.8, CHIP, "user bubble");
-  T(s, "איפה הכסף בתמחור — בלי לגעת במודל?", { x: 3.75, y: 1.8, w: 4.05, h: 0.8, fontSize: 15, color: TXT, valign: "middle" });
+  T(s, "אני בונה מודל תמחור חדש לרכב. מאיפה מתחילים?", { x: 3.75, y: 1.8, w: 4.05, h: 0.8, fontSize: 15, color: TXT, valign: "middle" });
   box(s, 0.85, 2.85, 6.4, 3.6, "1E2433", "agent bubble");
   T(s, [
-    { text: "מצאתי 3 ממצאים בתמחור, בסך ₪715K בשנה", options: { bold: true, breakLine: true, paraSpaceAfter: 8, rtlMode: true, align: "right" } },
-    { text: "כוח אדם: הקלדה ידנית של טבלאות תעריף — ₪360K", options: { bullet: true, breakLine: true, paraSpaceAfter: 4, rtlMode: true, align: "right" } },
-    { text: "מערכות IT: רישיונות כפולים לכלי מידול — ₪260K", options: { bullet: true, breakLine: true, paraSpaceAfter: 4, rtlMode: true, align: "right" } },
-    { text: "חשמל: ריצות לילה על נתונים שלא השתנו — ₪95K", options: { bullet: true, breakLine: true, paraSpaceAfter: 8, rtlMode: true, align: "right" } },
-    { text: "אף אחד מהם לא משנה את מודל התמחור. לפתוח משימה לצוות?", options: { color: MINT, rtlMode: true, align: "right" } },
+    { text: "המסלול המומלץ, לפי האנציקלופדיה", options: { bold: true, breakLine: true, paraSpaceAfter: 8, rtlMode: true, align: "right" } },
+    { text: "נתונים: טבלאות המקור המאושרות של פוליסות ותביעות", options: { bullet: true, breakLine: true, paraSpaceAfter: 4, rtlMode: true, align: "right" } },
+    { text: "כלי: כלי המידול המאושר — לא לפתוח רישיון נוסף", options: { bullet: true, breakLine: true, paraSpaceAfter: 4, rtlMode: true, align: "right" } },
+    { text: "חשמל: להריץ רק כשהנתונים משתנים, לא כל לילה", options: { bullet: true, breakLine: true, paraSpaceAfter: 8, rtlMode: true, align: "right" } },
+    { text: "כבר קיים תהליך שבונה טבלת תעריף רכב — הבעלים: אקטואר התמחור הראשי. לחבר אתכם?", options: { color: MINT, rtlMode: true, align: "right" } },
   ], { x: 1.05, y: 2.95, w: 6.0, h: 3.4, fontSize: 15, color: TXT, valign: "top" });
   const why = [
-    { ic: fa.FaDatabase, h: "לא ממציא מספרים", t: "כל משפט מצביע על ממצא או על שורת מקור" },
+    { ic: fa.FaDatabase, h: "לא ממציא מסלולים", t: "כל המלצה מצביעה על ערך באנציקלופדיה" },
     { ic: fa.FaProjectDiagram, h: "מתחבר לכל סוכן", t: "שרת MCP לסוכנים שכבר עובדים בארגון" },
     { ic: fa.FaComments, h: "נשען על השכבה הסמנטית", t: "יודע איזו טבלה משרתת איזה תהליך" },
   ];
@@ -569,7 +621,7 @@ async function icon(Comp, color, size = 256) {
   s = add("ערך");
   title(s, "למה זה עוזר — ולמי");
   const why2 = [
-    { ic: fa.FaServer, h: "מנהל ה-IT", t: "מפה אחת של כל המערכות, הטבלאות והדוחות — ומי אחראי על כל אחד" },
+    { ic: fa.FaServer, h: "מנהל ה-IT", t: "כל צוות בונה במסלול הנכון — פחות כפילויות חדשות" },
     { ic: fa.FaCoins, h: "סמנכ״ל הכספים", t: "איפה הכסף: כ-20 נקודות בסיס ביחס ההוצאות, עם שורות מקור" },
     { ic: fa.FaBalanceScale, h: "האקטואר הממונה", t: "הגדרה אחת לכל מונח — דוחות ועתודות על אותם נתונים" },
     { ic: fa.FaSitemap, h: "מנהלי המחלקות", t: "תמונה מלאה של התהליך שלהם, ואחריות ברורה לכל נכס" },
@@ -595,7 +647,7 @@ async function icon(Comp, color, size = 256) {
   const cols = [
     { h: "מקורות", sub: "קריאה בלבד", items: ["קוד, תהליכים וטבלאות", "שעות עבודה ומשימות", "מוני חשמל ושרתים", "מערכות ליבה ותביעות"], fill: CARD, hc: TXT },
     { h: "אנציקלופדיה", sub: "IBM Bob + watsonx.data", items: ["מיפוי קוד, תהליכים וטבלאות", "קישור למחלקה ולגורם אחראי", "מילון מונחים ושושלת", "זיהוי דוחות כפולים"], fill: "17362A", hc: MINT },
-    { h: "אורקסטרציה", sub: "watsonx Orchestrate", items: ["סוכן כוח אדם", "סוכן חשמל", "סוכן מערכות IT", "סוכן תהליך, למשל תביעות"], fill: "17362A", hc: MINT },
+    { h: "אורקסטרציה", sub: "watsonx Orchestrate", items: ["סוכן כוח אדם", "סוכן חשמל", "סוכן מערכות IT", "סוכן ניווט לתהליכים חדשים"], fill: "17362A", hc: MINT },
     { h: "בקרה ופעולה", sub: "watsonx.governance", items: ["אישור האקטואר הממונה", "תיעוד כל החלטה", "משימה והתראה לצוות"], fill: CARD, hc: TXT },
   ];
   for (let i = 0; i < 4; i++) {
@@ -609,7 +661,7 @@ async function icon(Comp, color, size = 256) {
   }
   box(s, M, 5.95, CW, 0.8, "2A2416", "bob band");
   s.addImage({ data: await icon(fa.FaCode, H.accent2), x: W - M - 0.7, y: 6.1, w: 0.5, h: 0.5, altText: "קוד", objectName: "bob icon" });
-  T(s, "IBM Bob קורא את קוד ה-IT, מתעד כל תהליך וכותב את ערכי האנציקלופדיה", { x: M + 0.3, y: 5.98, w: CW - 1.3, h: 0.75, fontSize: 17, bold: true, color: AMBER, valign: "middle" });
+  T(s, "IBM Bob בונה את האנציקלופדיה — ומנווט את המפתחים בזמן אמת, בזמן כתיבת הקוד", { x: M + 0.3, y: 5.98, w: CW - 1.3, h: 0.75, fontSize: 17, bold: true, color: AMBER, valign: "middle" });
   s.addNotes("הקטלוג מספק שושלת נתונים — חשוב לביקורת של IFRS 17. Orchestrate מנהל סוכן לכל רכיב — כוח אדם, חשמל ומערכות IT —, ו-governance מתעד כל החלטה. IBM Bob הוא כלי הפיתוח שבו בונים את המחברים ואת חבילת הכללים לביטוח.");
 
   // ===== 13. Business model =====
@@ -643,7 +695,7 @@ async function icon(Comp, color, size = 256) {
     { q: "רבעון 1", h: "אנציקלופדיה ארגונית", t: "מיפוי תוצרי ה-IT עם IBM Bob, ואז כללי מערכות IT וחשמל" },
     { q: "רבעון 2", h: "פיילוט", t: "חברת ביטוח אחת, מדידת חיסכון מאומת מול יחס ההוצאות" },
     { q: "רבעון 3", h: "רכיב כוח אדם", t: "ניתוח עבודה כפולה בחיתום ובדוחות, יחד עם משאבי אנוש" },
-    { q: "רבעון 4", h: "השקה", t: "3 חברות ביטוח משלמות, הפצה דרך שותפי IBM" },
+    { q: "רבעון 4", h: "ניווט והשקה", t: "ניווט בזמן אמת בתוך IBM Bob, ו-3 חברות ביטוח משלמות" },
   ];
   s.addShape(pres.shapes.LINE, { x: 1.2, y: 2.95, w: 10.9, h: 0, line: { color: NEUT, width: 3 }, objectName: "timeline" });
   for (let i = 0; i < 4; i++) {
@@ -686,7 +738,7 @@ async function icon(Comp, color, size = 256) {
     T(s, a.h, { x: x + 0.25, y: y + 1.35, w: 3.3, h: 0.55, fontSize: 20, bold: true, color: TXT, align: "center" });
     T(s, a.t, { x: x + 0.25, y: y + 1.9, w: 3.3, h: 0.85, fontSize: 14, color: MUTED, align: "center", valign: "top" });
   }
-  T(s, "מורידים את יחס ההוצאות — בלי לגעת ביחס התביעות", { x: M, y: 5.25, w: CW, h: 0.8, fontSize: 28, bold: true, color: MINT, align: "center" });
+  T(s, "לא רק מוצאים את הכסף — מנווטים כדי שלא ילך לאיבוד", { x: M, y: 5.25, w: CW, h: 0.8, fontSize: 28, bold: true, color: MINT, align: "center" });
   T(s, "[שם הצוות]  ·  eifo-money.fit  ·  [מייל ליצירת קשר]", { x: M, y: 6.15, w: CW, h: 0.5, fontSize: 15, color: MUTED, align: "center" });
   s.addNotes("סיום: שלוש בקשות קונקרטיות, ומשפט הסיום שחוזר על ההבטחה המרכזית.");
 
