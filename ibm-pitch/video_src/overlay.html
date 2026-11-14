@@ -1,0 +1,21 @@
+<!DOCTYPE html><html dir="rtl" lang="he"><head><meta charset="utf-8"><style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1280px;height:720px;overflow:hidden;background:transparent;font-family:"Liberation Sans",Arial,sans-serif;color:#fff}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pop{0%{opacity:0;transform:scale(.85)}60%{opacity:1;transform:scale(1.05)}100%{opacity:1;transform:scale(1)}}
+.shade{position:absolute;left:0;right:0;bottom:0;height:330px;background:linear-gradient(to top,rgba(3,8,12,.94) 0%,rgba(3,8,12,.86) 55%,rgba(3,8,12,0) 100%);animation:fadeIn .5s both}
+.chips{position:absolute;top:455px;left:40px;right:40px;display:flex;justify-content:center;gap:16px}
+.chip{padding:12px 24px;border-radius:40px;background:rgba(14,29,36,.95);border:2px solid #2ec8f0;font-size:26px;font-weight:bold;display:flex;align-items:center;gap:12px;white-space:nowrap}
+.chip i{width:12px;height:12px;border-radius:50%;background:#6ee0a8;display:inline-block}
+.k1{animation:pop .45s .15s both}.k2{animation:pop .45s .45s both}.k3{animation:pop .45s .75s both}.k4{animation:pop .45s 1.05s both;border-color:#a78bfa}.k4 i{background:#a78bfa}
+.line{position:absolute;top:560px;left:0;right:0;text-align:center;font-size:46px;font-weight:bold;animation:up .7s 1.7s both;text-shadow:0 2px 12px rgba(0,0,0,.6)}
+.line b{color:#6ee0a8}
+.sub{position:absolute;top:635px;left:0;right:0;text-align:center;font-size:24px;color:#a9c4ce;animation:up .7s 2.3s both}
+.sub b{color:#2ec8f0}
+</style></head><body>
+<div class="shade"></div>
+<div class="chips"><div class="chip k1"><i></i>חיבורים מהירים</div><div class="chip k2"><i></i>טבלאות מדויקות</div><div class="chip k3"><i></i>בדיקות גמישות</div><div class="chip k4"><i></i>הנחות לפי מודל AI חכם</div></div>
+<div class="line">— הכול במסלול אחד, <b>אופטימלי ובזמן אמת</b></div>
+<div class="sub">המערכת מנווטת — <b>IBM&nbsp;Bob</b> בונה</div>
+</body></html>
