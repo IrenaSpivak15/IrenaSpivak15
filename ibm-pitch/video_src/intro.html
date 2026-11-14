@@ -1,0 +1,44 @@
+<!DOCTYPE html><html dir="rtl" lang="he"><head><meta charset="utf-8"><style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1280px;height:720px;overflow:hidden;background:#05090d;font-family:"Liberation Sans",Arial,sans-serif;color:#fff}
+.bg{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,#0d2a33 0%,#061016 55%,#04070a 100%);animation:fadeIn .8s both}
+.grid{position:absolute;inset:-80px;background-image:linear-gradient(rgba(46,200,240,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(46,200,240,.07) 1px,transparent 1px);background-size:40px 40px;animation:pan 7s linear both, fadeIn 1s both}
+@keyframes pan{from{transform:translate(0,0)}to{transform:translate(40px,20px)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.kicker{position:absolute;top:58px;left:0;right:0;text-align:center;font-size:20px;letter-spacing:6px;color:#2ec8f0;font-weight:bold;direction:ltr;animation:fadeIn .8s .2s both}
+.hub{position:absolute;left:235px;top:250px;width:330px;height:180px;border-radius:22px;background:linear-gradient(160deg,#10232c,#0a161c);border:2px solid #2a5566;box-shadow:0 0 40px rgba(46,200,240,.12);display:flex;flex-direction:column;align-items:center;justify-content:center;animation:hubIn 1s .3s both}
+@keyframes hubIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+.hub .t{font-size:52px;font-weight:bold;direction:ltr}
+.hub .s{font-size:20px;color:#8fb3c0;margin-top:8px}
+.hub .code{position:absolute;top:14px;left:18px;font-family:"Liberation Mono",monospace;font-size:18px;color:#2ec8f0;direction:ltr}
+.mod{position:absolute;left:605px;top:250px;width:440px;height:180px;border-radius:22px;background:linear-gradient(160deg,#0f3326,#0a1f18);border:2px solid #6ee0a8;display:flex;align-items:center;gap:22px;padding:0 30px;animation:modIn 1.3s 1.3s cubic-bezier(.2,.8,.2,1) both, glow 1.2s 2.6s both}
+@keyframes modIn{from{opacity:0;transform:translateX(760px)}70%{opacity:1}to{opacity:1;transform:translateX(0)}}
+@keyframes glow{0%{box-shadow:0 0 0 rgba(110,224,168,0)}25%{box-shadow:0 0 70px rgba(110,224,168,.85)}100%{box-shadow:0 0 30px rgba(110,224,168,.3)}}
+.ico{width:96px;height:96px;border-radius:50%;background:#071a13;border:2px solid #6ee0a8;display:flex;align-items:center;justify-content:center;flex:none}
+.mod .t{font-size:44px;font-weight:bold;white-space:nowrap}
+.mod .s{font-size:21px;color:#6ee0a8;margin-top:6px;font-weight:bold}
+.plug{position:absolute;left:563px;top:318px;width:46px;height:44px;border-radius:8px;background:#2ec8f0;opacity:0;animation:plug 1.4s 2.55s both}
+@keyframes plug{0%{opacity:0;transform:scaleX(.2)}15%{opacity:1;transform:scaleX(1);box-shadow:0 0 50px #2ec8f0}100%{opacity:1;box-shadow:0 0 14px #2ec8f0}}
+.ring{position:absolute;left:586px;top:340px;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;border:3px solid #2ec8f0;opacity:0;animation:ring 1s 2.6s both}
+@keyframes ring{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(40)}}
+.cap{position:absolute;top:120px;left:0;right:0;text-align:center;font-size:44px;font-weight:bold;animation:up .8s 2.85s both}
+.cap b{color:#2ec8f0}
+@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.chips{position:absolute;top:480px;left:0;right:0;display:flex;justify-content:center;gap:24px}
+.chip{padding:14px 30px;border-radius:40px;background:#0e1d24;border:1.5px solid #2a5566;font-size:24px;font-weight:bold;display:flex;align-items:center;gap:12px}
+.chip i{width:12px;height:12px;border-radius:50%;background:#6ee0a8;display:inline-block}
+.c1{animation:up .6s 3.6s both}.c2{animation:up .6s 4.0s both}.c3{animation:up .6s 4.4s both}
+.c3{border-color:#f2b544;color:#f2b544}.c3 i{background:#f2b544}
+.tag{position:absolute;top:585px;left:0;right:0;text-align:center;font-size:26px;color:#8fb3c0;animation:up .8s 5.1s both}
+.tag b{color:#fff}
+</style></head><body>
+<div class="bg"></div><div class="grid"></div>
+<div class="kicker">IBM CHALLENGE 2026</div>
+<div class="cap">רכיב ייחודי שמתחבר ל-<b>IBM&nbsp;Bob</b></div>
+<div class="hub"><div class="code">&lt;/&gt;</div><div class="t">IBM Bob</div><div class="s">שותף פיתוח מבוסס AI</div></div>
+<div class="plug"></div><div class="ring"></div>
+<div class="mod"><div class="ico"><svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#6ee0a8" stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/><path d="M10.5 7.5v6M12.3 8.6c-.5-.6-1.1-.8-1.8-.8-1 0-1.8.6-1.8 1.4 0 1.9 3.6 1 3.6 2.9 0 .8-.8 1.4-1.8 1.4-.8 0-1.4-.3-1.9-.9"/></svg></div>
+<div><div class="t">איפה הכסף?</div><div class="s">GPS ארגוני</div></div></div>
+<div class="chips"><div class="chip c1"><i></i>אנציקלופדיה ארגונית</div><div class="chip c2"><i></i>שכבה סמנטית</div><div class="chip c3"><i></i>ניווט בזמן אמת</div></div>
+<div class="tag"><b>מנוע להתוויית מסלול אופטימלי</b> — בכל תהליך, בזמן אמת</div>
+</body></html>
